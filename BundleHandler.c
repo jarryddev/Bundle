@@ -26,9 +26,9 @@ static int countFiles(char *const argv[])
 	FTSENT *p, *chp;
 	int fts_options = FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR;
     
-	char *const path[] = {(argv + 1), NULL};
+//	char *const path[] = {(argv + 1), NULL};
 	
-    if ((ftsp = fts_open(path, fts_options, NULL)) == NULL) {
+    if ((ftsp = fts_open(argv, fts_options, NULL)) == NULL) {
 		warn("fts_open");
 		return -1;
 	}
