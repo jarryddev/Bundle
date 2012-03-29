@@ -20,15 +20,17 @@
 
 int fileCountForHeader;
 
-static int countFiles(char *const argv[])
+static int countFiles(char *argv)
 {
     FTS *ftsp;
 	FTSENT *p, *chp;
 	int fts_options = FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR;
     
 //	char *const path[] = {(argv + 1), NULL};
-	
-    if ((ftsp = fts_open(argv, fts_options, NULL)) == NULL) {
+
+	printf("countfiles to %s\n", argv);
+
+	if ((ftsp = fts_open(&argv, fts_options, NULL)) == NULL) {
 		warn("fts_open");
 		return -1;
 	}
@@ -203,10 +205,10 @@ int main(int argc, char *const argv[])
 {
 	if(argc == 2)
 	{
-		countFiles(argv + 1);
+	  countFiles(*(argv + 1));
 		
 		int rc;
-		if((rc = ptree(argv + 1), != 0)
+		if((rc = ptree(*(argv+1), *(argv+2)) != 0))
 		{
 			rc = 1;
 			printf("Completed the packing\n");
