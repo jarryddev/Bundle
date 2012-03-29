@@ -206,7 +206,7 @@ int main(int argc, char *const argv[])
 		countFiles(argv + 1);
 		
 		int rc;
-		if((rc = ptree(argv + 1), != 0)
+		if((rc = ptree(argv + 1), != 0))
 		{
 			rc = 1;
 			printf("Completed the packing\n");
