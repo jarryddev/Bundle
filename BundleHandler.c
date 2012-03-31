@@ -40,11 +40,15 @@ static int countFiles(char **source)
 		return 0;               /* no files to traverse */
 	}
     
-    while ((p = fts_read(ftsp)) != NULL) {
+    while ((p = fts_read(ftsp)) != NULL) 
+	{
 		switch (p->fts_info) {
 			case FTS_F:
-                //increment the file count
-                fileCountForHeader++;
+				if(strstr(p->fts_path, "DS_Store") == NULL) //wasn't a DS_Store file.
+				{
+					//increment the file count
+	                fileCountForHeader++;
+				}
 				break;
 			default:
 				break;
@@ -136,7 +140,12 @@ static int ptree(char **source, char *desintation)
 		else if (answer == 'n')
 		{
 			printf("Please run Bundle again with the correct output path.\n");
-			return 2; //user should try with correct path, exiting.
+			return 1; //user should try with correct path, exiting.
+		}
+		else
+		{
+			printf("not sure ? ;)\n");	
+			return 1;
 		}
 	}
 	    
@@ -151,7 +160,7 @@ static int ptree(char **source, char *desintation)
 		return 0;               /* no files to traverse */
 	}
     
-	printf("\nCreating the Bundle\n");
+	printf("\nCreating the Bundle\n\n");
 
 	while ((p = fts_read(ftsp)) != NULL)
 	{
@@ -162,48 +171,55 @@ static int ptree(char **source, char *desintation)
                 printData(pakFile, p->fts_path);
 				break;
 			case FTS_F:
-				printf("\t>file: %s\n", p->fts_path);
-                printData(pakFile, p->fts_path);
-                
-                // compress the fts_path file and write 
-                // the compressed data one to pak file
-                compress_one_file(p->fts_path, "/Users/Mac/Desktop/temp.txt");
-                
-                // get the data from the file
-                FILE *tempFile;
-                tempFile = fopen("/Users/Mac/Desktop/temp.txt","rb");
-                
-                char byte;
-                long offset = ftell(pakFile);
-                
-                //get the size of the file
-                fseek(tempFile, 0L, SEEK_END);
-                long size = ftell(tempFile);
-                fseek(tempFile, 0L, SEEK_SET);
-                
-				// print the file info
-				char *fileName = p->fts_path;
-                char *tempFileName = strdup(fileName);
-                if(tempFileName) 
+				if(strstr(p->fts_path, "DS_Store") != NULL) //ignore DS_Store files on mac
 				{
-                    printf("\t>The offset for %s is %lu\n", tempFileName, offset);
-                    printf("\t>The compressed size of %s is %lu\n", basename(tempFileName), size);
-					printf("\t>%s was added to the bundle\n\n", basename(tempFileName));
-                    free(tempFileName);
-                }
-				
-				// copy the data from the temp compressed file to the pak file
-                while (!feof(tempFile)) 
-                {
-                    fread(&byte, sizeof(char), 1, tempFile);
-                    fwrite(&byte, sizeof(char), 1, pakFile);
-                }
+					printf("Found DS_Store file, ignoring. Mac ftw?\n");
+				}
+				else
+				{
+					printf("\t>file: %s\n", p->fts_path);
+	                printData(pakFile, p->fts_path);
 
-                fclose(tempFile); // done!
-            
-                if (remove("/Users/Mac/Desktop/temp.txt") == -1)
-                    perror("Error in deleting a file");
-				break;
+	                // compress the fts_path file and write 
+	                // the compressed data one to pak file
+	                compress_one_file(p->fts_path, "/Users/Mac/Desktop/temp.txt");
+
+	                // get the data from the file
+	                FILE *tempFile;
+	                tempFile = fopen("/Users/Mac/Desktop/temp.txt","rb");
+
+	                char byte;
+	                long offset = ftell(pakFile);
+
+	                //get the size of the file
+	                fseek(tempFile, 0L, SEEK_END);
+	                long size = ftell(tempFile);
+	                fseek(tempFile, 0L, SEEK_SET);
+
+					// print the file info
+					char *fileName = p->fts_path;
+	                char *tempFileName = strdup(fileName);
+	                if(tempFileName) 
+					{
+	                    printf("\t>The offset for %s is %lu\n", tempFileName, offset);
+	                    printf("\t>The compressed size of %s is %lu\n", basename(tempFileName), size);
+						printf("\t>%s was added to the bundle\n\n", basename(tempFileName));
+	                    free(tempFileName);
+	                }
+
+					// copy the data from the temp compressed file to the pak file
+	                while (!feof(tempFile)) 
+	                {
+	                    fread(&byte, sizeof(char), 1, tempFile);
+	                    fwrite(&byte, sizeof(char), 1, pakFile);
+	                }
+
+	                fclose(tempFile); // done!
+
+	                if (remove("/Users/Mac/Desktop/temp.txt") == -1)
+	                    perror("Error in deleting a file");
+					break;
+				}
 			default:
 				break;
         }
