@@ -10,14 +10,14 @@ PROG=header
 $(OBJ):	$(SRC)
 	$(CC) `pkg-config --cflags glib-2.0` -c $(SRC) 
 
-header: $(OBJ)
-	$(CC) `pkg-config --cflags --libs glib-2.0` $(PROG).o -o $(PROG) 
+header: $(OBJ) lib
+	$(CC) `pkg-config --cflags --libs glib-2.0` libheader.a header_main.c -o header_main
 
 lib:	$(OBJ)
-	ar rc libheader.a header.o
+	ar cr libheader.a header.o
 
 run: 	clean header
-	./$(PROG)
+	./$(PROG)_main
 	@echo "Printing file data:" && echo "" 
 	hexdump file.pak
 
