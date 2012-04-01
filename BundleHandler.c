@@ -1,5 +1,5 @@
 //
-//	BundleHandler
+//	BundleHandler.c
 //  Bundle
 //
 //  Created by Jarryd Hall on 2/7/12.
@@ -16,19 +16,20 @@
 #include <libgen.h>
 #include <unistd.h>
 #include "zlib.h"
-// #include "BundleHandler.h"
+#include "BundleHandler.h"
 
 int fileCountForHeader;
 
-static int countFiles(char *const argv[])
+/////////////////////////////////////////////////////////////
+// Count the number of files for header length calculation
+/////////////////////////////////////////////////////////////
+static int countFiles(char **source)
 {
     FTS *ftsp;
 	FTSENT *p, *chp;
 	int fts_options = FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR;
     
-	// char *const path[] = {(argv + 1), NULL};
-	
-    if ((ftsp = fts_open(argv, fts_options, NULL)) == NULL) {
+	if ((ftsp = fts_open(source, fts_options, NULL)) == NULL) {
 		warn("fts_open");
 		return -1;
 	}
@@ -39,21 +40,24 @@ static int countFiles(char *const argv[])
 		return 0;               /* no files to traverse */
 	}
     
-    while ((p = fts_read(ftsp)) != NULL) {
+    while ((p = fts_read(ftsp)) != NULL) 
+	{
 		switch (p->fts_info) {
 			case FTS_F:
-                //increment the file count
-                fileCountForHeader++;
+				if(strstr(p->fts_path, "DS_Store") == NULL) //wasn't a DS_Store file.
+				{
+					//increment the file count
+	                fileCountForHeader++;
+				}
 				break;
 			default:
 				break;
         }
     }
-
-    printf("file count is %d\n*********\n", fileCountForHeader);
     fts_close(ftsp);
     return 0;    
 }
+
 /////////////////////////////////////////////////////////////
 // Demonstration of zlib utility functions
 /////////////////////////////////////////////////////////////
@@ -99,7 +103,7 @@ int compress_one_file(char *infilename, char *outfilename)
     fclose(infile);
     gzclose(outfile);
 
-    printf("Read %ld bytes, Wrote %ld bytes,Compression factor %4.2f%%\n",
+    printf("\t>Read %ld bytes, Wrote %ld bytes,Compression factor %4.2f%%\n",
                     total_read, file_size(outfilename),
                     (1.0-file_size(outfilename)*1.0/total_read)*100.0);
 }
@@ -107,23 +111,44 @@ int compress_one_file(char *infilename, char *outfilename)
 /////////////////////////////////////////////////////////////
 // Functions for writing asset data to pak file
 /////////////////////////////////////////////////////////////
-void printData(FILE *someFile, char *text){
+void printData(FILE *someFile, char *text)
+{
     fprintf(someFile,"%s\n", text); /*writes*/
 }
 
-static int ptree(char *const source[], char *const output[])
+static int ptree(char **source, char *desintation)
 {
 	FTS *ftsp;
 	FTSENT *p, *chp;
 	int fts_options = FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR;
 	int rval = 0;
     char line[512];
+	FILE *pakFile;
+	FILE *file;
 	
-	printf("File count is %d\n", fileCountForHeader);
-	
-	char *const *outputFile = output;
-	FILE *pakFile = fopen(*outputFile,"ab");
-    
+	if (file = fopen(desintation, "r"))
+	{
+		printf("File exists, who you like to overwrite it y/n ?  ");
+		
+		int answer;
+		answer = getchar();
+		if(answer == 'y')
+		{
+			fclose(file);
+			pakFile = fopen(desintation,"wb");
+		}
+		else if (answer == 'n')
+		{
+			printf("Please run Bundle again with the correct output path.\n");
+			return 1; //user should try with correct path, exiting.
+		}
+		else
+		{
+			printf("not sure ? ;)\n");	
+			return 1;
+		}
+	}
+	    
 	if ((ftsp = fts_open(source, fts_options, NULL)) == NULL) {
 		warn("fts_open");
 		return -1;
@@ -131,93 +156,117 @@ static int ptree(char *const source[], char *const output[])
 	
 	/* Initialize ftsp with as many argv[] parts as possible. */
 	chp = fts_children(ftsp, 0);
-	printf("chp = %s\n", chp->fts_name);
 	if (chp == NULL) {
 		return 0;               /* no files to traverse */
 	}
     
+	printf("\nCreating the Bundle\n\n");
+
 	while ((p = fts_read(ftsp)) != NULL)
 	{
 		switch (p->fts_info) 
 		{
 			case FTS_D:
-				printf("dir: %s\n", p->fts_path);
+				printf(">dir: %s\n\n", p->fts_path);
                 printData(pakFile, p->fts_path);
 				break;
 			case FTS_F:
-				printf("file: %s\n", p->fts_path);
-                printData(pakFile, p->fts_path);
-                
-                // compress the fts_path file and write 
-                // the compressed data one to pak file
-                compress_one_file(p->fts_path, "/Users/Mac/Desktop/temp.txt");
-                
-                // get the data from the file
-                FILE *tempFile;
-                tempFile = fopen("/Users/Mac/Desktop/temp.txt","rb");
-                
-                char byte;
-                long offset = ftell(pakFile);
-                
-                //get the size of the file
-                fseek(tempFile, 0L, SEEK_END);
-                long size = ftell(tempFile);
-                fseek(tempFile, 0L, SEEK_SET);
-                
-				// print the file info
-				char *fileName = p->fts_path;
-                char *tempFileName = strdup(fileName);
-                if(tempFileName) 
+				if(strstr(p->fts_path, "DS_Store") != NULL) //ignore DS_Store files on mac
 				{
-                    printf("\n*********%s\n\n", basename(tempFileName));
-                    printf("The offset for %s is %lu\n", tempFileName, offset);
-                    printf("The size of the temp file copying to pak is %lu\n", size);
-					printf("\nFILE WAS PACKED\n\n*********\n");
-                    free(tempFileName);
-                }
-				
-				// copy the data from the temp file to the pak file
-                while (!feof(tempFile)) 
-                {
-                    fread(&byte, sizeof(char), 1, tempFile);
-                    fwrite(&byte, sizeof(char), 1, pakFile);
-                }
+					printf("Found DS_Store file, ignoring. Mac ftw?\n");
+				}
+				else
+				{
+					printf("\t>file: %s\n", p->fts_path);
+	                printData(pakFile, p->fts_path);
 
-                fclose(tempFile); // done!
-            
-                if (remove("/Users/Mac/Desktop/temp.txt") == -1)
-                    perror("Error in deleting a file");
-				break;
+	                // compress the fts_path file and write 
+	                // the compressed data one to pak file
+	                compress_one_file(p->fts_path, "/Users/Mac/Desktop/temp.txt");
+
+	                // get the data from the file
+	                FILE *tempFile;
+	                tempFile = fopen("/Users/Mac/Desktop/temp.txt","rb");
+
+	                char byte;
+	                long offset = ftell(pakFile);
+
+	                //get the size of the file
+	                fseek(tempFile, 0L, SEEK_END);
+	                long size = ftell(tempFile);
+	                fseek(tempFile, 0L, SEEK_SET);
+
+					// print the file info
+					char *fileName = p->fts_path;
+	                char *tempFileName = strdup(fileName);
+	                if(tempFileName) 
+					{
+	                    printf("\t>The offset for %s is %lu\n", tempFileName, offset);
+	                    printf("\t>The compressed size of %s is %lu\n", basename(tempFileName), size);
+						printf("\t>%s was added to the bundle\n\n", basename(tempFileName));
+	                    free(tempFileName);
+	                }
+
+					// copy the data from the temp compressed file to the pak file
+	                while (!feof(tempFile)) 
+	                {
+	                    fread(&byte, sizeof(char), 1, tempFile);
+	                    fwrite(&byte, sizeof(char), 1, pakFile);
+	                }
+
+	                fclose(tempFile); // done!
+
+	                if (remove("/Users/Mac/Desktop/temp.txt") == -1)
+	                    perror("Error in deleting a file");
+					break;
+				}
 			default:
 				break;
         }
     }
-	fclose(pakFile);
-    //decompress_one_file("/Users/Mac/Desktop/temp.txt", "/Users/Mac/Desktop/lastDecompressedTempFile.txt");
-    
+	fclose(pakFile); 
     fts_close(ftsp);
     return 0;
 }
 
 int main(int argc, char *const argv[])
 {
-	if(argc == 2)
+	int rc;
+	
+	if(argc == 3)
 	{
-		countFiles(argv + 1);
+		printf("\n"); // this adds a space for readability in terminal
+		char **sourcePath = malloc(2 * (sizeof *sourcePath));
+		sourcePath[0] = malloc(strlen(argv[1]) + 1);
+		if(!sourcePath[0])
+			printf("Could not start package process\n");
+		strcpy(sourcePath[0], argv[1]);
+		sourcePath[1] = NULL;
+		countFiles(sourcePath);
 		
-		int rc;
-		if((rc = ptree(argv + 1), != 0)
-		{
+		char *destination = malloc(strlen(argv[2]));
+		strcpy(destination, argv[2]);
+	
+	  	if((rc = ptree(sourcePath, destination) != 0))
+	 	{
+			printf("Failed to create Bundle\n");
 			rc = 1;
-			printf("Completed the packing\n");
+	 	}
+		else
+		{
+			printf("Bundle created: %s\n", destination);
 		}
-		// else
-		// 	{
-		// 		printf("Failed to pack data\n");
-		// 	}
+
+		free(sourcePath[0]);
+		free(sourcePath);
+		free(destination);	
 	}
-	else
+ 	else
 	{
-		printf("Please pass the source folder name as the only argument\n");
+ 		printf("Usage: BundleHandler <source_path> <destination path>\n");
 	}
+	
+	printf("\n"); // again, this improves readability. imo :)
+	
+	return rc;
 }
