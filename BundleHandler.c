@@ -140,7 +140,6 @@ static int ptree(char **source, char *desintation)
       if(answer == 'y')
         {
           fclose(file);
-          pakFile = fopen(desintation,"wb+");
         }
       else if (answer == 'n')
         {
@@ -153,6 +152,9 @@ static int ptree(char **source, char *desintation)
           return 1;
         }
     }
+
+  pakFile = fopen(desintation,"wb+");
+
 
   // initialize header with nuber of files
   if ((start_offset=header_init(pakFile, fileCountForHeader)) == -1){
