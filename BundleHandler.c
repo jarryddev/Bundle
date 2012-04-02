@@ -46,6 +46,7 @@ static int countFiles(char **source)
     {
       switch (p->fts_info) {
       case FTS_F:
+
         if(strstr(p->fts_path, "DS_Store") == NULL) //wasn't a DS_Store file.
           {
             //increment the file count
@@ -157,11 +158,11 @@ static int ptree(char **source, char *desintation)
 
 
   // initialize header with nuber of files
-  if ((start_offset=header_init(pakFile, fileCountForHeader)) == -1){
+    if ((start_offset=header_init(pakFile, fileCountForHeader)) == -1){
     // perror("bundler_header");
     fprintf(stderr, "Cannot initialize header...exiting\n");
     return 0;
-  }
+    }
 
   if ((ftsp = fts_open(source, fts_options, NULL)) == NULL) {
     warn("fts_open");
@@ -214,11 +215,12 @@ static int ptree(char **source, char *desintation)
               char *fileName = p->fts_path;
               char *tempFileName = strdup(fileName);
 
-	      //update header
-	      offset_p off= malloc(sizeof(offset));
-	      off->hash = 0; // todo hash filename!
-	      off->size= size;
-	      off->offset_start= offset;
+              //update header
+              offset_p off= malloc(sizeof(header_offset));
+
+	      off->hash = 0x0; // todo hash filename!
+              off->size= size;
+              off->offset_start= offset;
 	      header_write_offset(pakFile, off, f_index++);
 	      free(off);
 
@@ -231,12 +233,13 @@ static int ptree(char **source, char *desintation)
                 }
 
               // copy the data from the temp compressed file to the pak file
+	      fseek(pakFile, start_offset, SEEK_SET);
               while (!feof(tempFile))
                 {
                   fread(&byte, sizeof(char), 1, tempFile);
                   fwrite(&byte, sizeof(char), 1, pakFile);
                 }
-	      
+
 
               fclose(tempFile); // done!
 
@@ -281,6 +284,26 @@ int main(int argc, char *const argv[])
           printf("Bundle created: %s\n", destination);
         }
 
+
+      // header file tests...
+      FILE *tfh = fopen(destination, "rb+");
+
+      unsigned int num_files  = header_get_head(tfh);
+      printf("header :: num files : %d\n", num_files);
+
+      // try to read an offset
+      offset_p off= header_read_offset(tfh, 0xaaaa);
+
+      if (off == NULL){
+        fprintf(stderr, "Offset not found! :(");
+        free(off);
+      }else{
+	print_offset(off);
+        free(off);
+      }
+
+      close(tfh);
+
       free(sourcePath[0]);
       free(sourcePath);
       free(destination);
@@ -291,6 +314,9 @@ int main(int argc, char *const argv[])
     }
 
   printf("\n"); // again, this improves readability. imo :)
+
+
+
 
   return rc;
 }
