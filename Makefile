@@ -1,6 +1,13 @@
+##
+## Bundler Makefile
+##
+## 
+##
 
 OBJ=BundleHandler.o
 SRC=BundleHandler.c
+LIB=lib/
+BIN=bin/
 
 $(OBJ): $(SRC) header_lib
 	gcc -c BundleHandler.c -Iheader/

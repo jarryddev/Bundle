@@ -1,0 +1,41 @@
+##
+## Make file
+##
+
+CC=gcc
+OBJ=*.o
+
+BIN_DIR=../bin
+HEADER_OBJ=header.o
+HEADER_SRC=header.c header.h
+BUNDLE_SRC=BundleHandler.c BundleHandler.h
+PROG= BundleHandler
+LIB_DIR=../lib
+CC_FLAGS=-L../lib
+LINK_FLAGS= -lz 
+
+$(HEADER_OBJ): 
+	$(CC) $(CC_FLAGS) -c $(HEADER_SRC)
+
+$(OBJ):	$(HEADER_OBJ) header_lib
+	$(CC) -c $(BUNDLE_SRC) 
+
+install: $(OBJ)
+	$(CC) $(OBJ) $(LINK_FLAGS) -o $(BIN_DIR)/bundle
+
+lib:	$(OBJ) header_lib
+	ar cr $(LIB_DIR)/libbundler.a bundler.o  
+
+header: header_lib
+	$(CC) $(LIB_DIR)/libheader.a header_main.c -o header_main
+
+header_lib:	$(HEADER_OBJ)
+	ar cr $(LIB_DIR)/libheader.a header.o
+
+run: 	clean header
+	./$(PROG)_main
+	@echo "Printing file data:" && echo "" 
+	hexdump file.pak
+
+clean:
+	-rm -f *.o *.a bundle
