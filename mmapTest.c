@@ -1,7 +1,7 @@
 // mmapTest.c
 // author: Jarryd Hall
 // mmap test for Bundle Project
-// mmap usage: caddr_t mmap(caddr_t addr, size_t len, int prof, int flags, int fd, off_t offset)
+// mmap usage: void * mmap(void* addr, size_t len, int prof, int flags, int fd, off_t offset)
 // the mmap function returns the address to the map data, -1 is returned and errno set if it fails
 // 
 // the arguments are as follows
@@ -39,30 +39,62 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 
-// this returns the size of the pakFile which will be passed to mmap()
-size_t getFileSize(FILE *pakFile)
-{
-	struct stat statBuffer;
-	int result = fstat (pakFile, &statBuffer);
-	if(result == -1)
-	{
-		printf("Couldn't open file"\n); 
-		return -1; /* add the code to process this return*/
-	}
-	size_t fileSize = statBuffer.st_size;
-	return fileSize;
-}
+size_t fileSize;
 
 // this maps the pak file and returns the address of the mapped data starting point
-caddr_t mapPakFile (size_t fileSize, FILE pakFile)
+void * mapPakFile (const char *fileToOpen, long startOffset)
 {
+	FILE *file = fopen(fileToOpen, "rb");
+	fseek(file, 0, SEEK_END);
+	fileSize = ftell(file);
+	fseek(file, 0, SEEK_SET);
+	printf("File size is %lu bytes.\n", (unsigned long)fileSize);
+	
+	int fileDescriptor = fileno(file);
+	off_t offset = startOffset;
+	
 	// map the data
-	caddr_t  mappedAddress = mmap (NULL, fileSize, PROT_READ, MAP_FILE, pakFile, 0);
-	if(mappedAddress == (caddr_t) -1)
+	void *mappedAddress = mmap(NULL, fileSize, PROT_READ, MAP_PRIVATE, fileDescriptor, offset);
+	if(mappedAddress == MAP_FAILED)
 	{
-		printf("Failed to map file to virtual memory"\n);
-		return -1; /* add the code to process this return */
+		printf("Failed to map file to virtual memory.\n");
+		fclose(file);
+		return NULL;
 	}
+	
+	printf("Successfully mapped file to virtual memory.\n");
+	// use this for optimizing the kernel for our intended use of the mapped data
+	int ret;
+	// tell kernel how we use data from addr -> addr + len
+	// MADV_RANDOM  disables readahead, reads minimum data on each read
+	ret = madvise (mappedAddress, fileSize, MADV_RANDOM);
+	if (ret < 0)
+		perror ("madvise");
+	
+	fclose(file);
 	return mappedAddress;
 }
 
+void unMapPakFile (void *mappedAddress, size_t fileSize)
+{
+	if(munmap(mappedAddress, fileSize) != 0)
+	{
+		printf("Failed to unmap file.\n");
+	}
+	else
+	{
+		printf("Successfully unmapped file with size %lu.\n", (unsigned long)fileSize);
+	}
+}
+
+int main ()
+{
+	char *mappedFile = mapPakFile("test.pak", 0);
+
+	if(mappedFile != NULL)
+	{
+		unMapPakFile(mappedFile, fileSize);
+	}
+	
+	return 0;
+}
