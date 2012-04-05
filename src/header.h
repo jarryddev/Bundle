@@ -18,4 +18,4 @@ unsigned int header_init(FILE *, unsigned int);
 void header_close(FILE *);
 unsigned int header_get_head(FILE *);
 void print_offset(offset_p);
-
+offset_p *header_get_offsets(FILE *);

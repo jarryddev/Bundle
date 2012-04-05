@@ -151,34 +151,25 @@ void header_close(FILE* fh){
 }
 
 offset_p* header_get_offsets(FILE *fh){
-  unsigned int n_files=  header_get_head(fh),i,len;
-  offset_p *offsets;
-  char *buff;
   
-  fseek(fh, sizeof(unsigned int), SEEK_SET);
+  unsigned int n_files=  header_get_head(fh),i,len;
+  offset_p* offsets;
 
-  if ((buff=malloc( sizeof(header_offset)*n_files)) == NULL){
+  fseek(fh, sizeof(header_offset), SEEK_SET);
+  
+  if ((offsets=malloc( sizeof(header_offset)*n_files)) == NULL){
     perror("malloc");
     return NULL;
   }
-
-  if ((len = fread(buff, sizeof(header_offset), n_files, fh)) == -1){
+  
+  if ((len = fread(offsets, sizeof(header_offset), n_files, fh)) == -1){
     perror("fread");
     return NULL;
   }
 
-  if ((offsets=malloc(sizeof(header_offset) * n_files)) == NULL){
-      perror("malloc");
-      return NULL;
-    }
-
   for (i=0; i< n_files; i++){
-    memcpy(&offsets[i], &buff, sizeof(header_offset));
-    buff+= sizeof(header_offset);
+    print_offset(offsets[i]);
   }
-  
-  buff-= sizeof(header_offset)*n_files;
-  free(buff);
 
   return offsets;
 }
