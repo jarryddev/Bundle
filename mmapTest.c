@@ -40,10 +40,15 @@
 #include <sys/stat.h>
 
 size_t fileSize;
+size_t size = 0;
 
 // this maps the pak file and returns the address of the mapped data starting point
 void * mapPakFile (const char *fileToOpen, long startOffset)
 {
+	unsigned char *temp;
+	unsigned int store;
+	size_t i;
+	
 	FILE *file = fopen(fileToOpen, "rb");
 	fseek(file, 0, SEEK_END);
 	fileSize = ftell(file);
@@ -55,7 +60,7 @@ void * mapPakFile (const char *fileToOpen, long startOffset)
 	
 	// map the data
 	void *mappedAddress = mmap(NULL, fileSize, PROT_READ, MAP_PRIVATE, fileDescriptor, offset);
-	if(mappedAddress == MAP_FAILED)
+	if(mappedAddress == (void *) -1)
 	{
 		printf("Failed to map file to virtual memory.\n");
 		fclose(file);
@@ -63,6 +68,10 @@ void * mapPakFile (const char *fileToOpen, long startOffset)
 	}
 	
 	printf("Successfully mapped file to virtual memory.\n");
+	
+	printf("Starting Mapped Address is: %X \n", (char *) mappedAddress);
+	//printf("End Mapped Address is %X: \n", (char *) (mappedAddress + (fileSize - 1)));
+		
 	// use this for optimizing the kernel for our intended use of the mapped data
 	int ret;
 	// tell kernel how we use data from addr -> addr + len
@@ -72,6 +81,20 @@ void * mapPakFile (const char *fileToOpen, long startOffset)
 		perror ("madvise");
 	
 	fclose(file);
+	
+	//printf("Reading %lu bytes.\n", (unsigned long)fileSize);
+	
+	/*
+	// Read 16 bytes
+	temp = (unsigned char*) mappedAddress;
+	for(i = 0; i < 16; i++)
+	{
+		printf("Address [%02lu] : %X = %02X \n", (unsigned long)i, temp, *(temp));
+		temp++;
+	}
+	*/
+	 
+	
 	return mappedAddress;
 }
 
@@ -87,12 +110,51 @@ void unMapPakFile (void *mappedAddress, size_t fileSize)
 	}
 }
 
+unsigned char * 
+getDataForOffsets(void *mappedAddress, size_t startOffset, size_t numberOfBtyes)
+{
+	unsigned char *temp;
+	temp = (unsigned char*) mappedAddress + startOffset;
+	
+	printf("Reading %lu bytes.\n", (unsigned long)numberOfBtyes);
+
+	FILE *sampleFile;
+	sampleFile = fopen("Sample.png", "wb");
+	
+	size_t i;
+	for(i = startOffset; i < (startOffset + numberOfBtyes)/2; i++)
+	{
+		fwrite(temp, 1, 1, sampleFile);
+		//printf("Address [%02lu] : %X = %02X \n", (unsigned long)i, temp, *(temp));
+		temp++;
+	}
+	fclose(sampleFile);
+	return temp;
+}
+
 int main ()
 {
-	char *mappedFile = mapPakFile("test.pak", 0);
-
+	
+	FILE *f;
+	int tempSize = 0;
+	if (f = fopen("test.jpg", "rb"));
+	{
+	   	fseek(f, 0, SEEK_END);
+	   	size = ftell(f);
+		tempSize = size;
+		printf("File size of file to map is %lu\n", (unsigned long) size);
+		printf("Temp File size of file to map is %lu\n", (unsigned long) tempSize);
+	   	fclose(f);
+	}
+	
+	char *mappedFile = mapPakFile("test.jpg", 0);
+	
 	if(mappedFile != NULL)
 	{
+		//sleep(5);
+		printf("Size to be passed to getDataForOffsets is %lu\n", (unsigned long) tempSize);
+		printf("Test is %lu\n", (unsigned long) (size));
+		unsigned char *fetchedData = getDataForOffsets(mappedFile, 0, size);
 		unMapPakFile(mappedFile, fileSize);
 	}
 	
