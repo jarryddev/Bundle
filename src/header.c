@@ -107,23 +107,33 @@ void small_to_big_endian_int(char **bin, unsigned int size){
 }
 
 unsigned int header_init(FILE *fh, unsigned int n_files){
-  int header_size;
-  int len=fwrite(&n_files, sizeof(unsigned int), 1, fh);
-  char buff[header_size];
+  size_t header_size;
+  char *buff;
 
+  // set to file handler to ancor
   fseek(fh, 0, SEEK_SET);
+
+  // write sum of files to beginning of file
+  fwrite(&n_files, sizeof(unsigned int), 1, fh);
 
   //write rubbish until end of header.
   header_size=n_files * sizeof(header_offset) + sizeof(unsigned int);
 
+  if ((buff = malloc(header_size))==NULL){
+    perror("malloc");
+    exit(1);
+  }
+
   bzero(buff, header_size);
+
+  fseek(fh, sizeof(unsigned int), SEEK_SET); // skip header count
 
   fwrite(&buff, header_size, 1, fh);
   return header_size;
 }
 
 void print_offset(offset_p off){
-  fprintf(stdout, "OFFSET: ---- \n size: %u, offset: %u, hash: %u\n", off->size, off->offset_start, off->hash);
+  printf("OFFSET: ---- \n size: %u, offset: %p, hash: %p\n", off->size, off->offset_start, off->hash);
 }
 
 unsigned int header_get_head(FILE *fh){

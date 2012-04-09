@@ -19,8 +19,8 @@
 #include "header.h"
 #include "BundleHandler.h"
 
+int fileCountForHeader;
 const char ext_to_ignore[] = ".DS_Store .exe";
-static unsigned int fileCountForHeader=0;
 
 /////////////////////////////////////////////////////////////
 // Count the number of files for header length calculation
@@ -131,46 +131,38 @@ static int ptree(char **source, char *desintation)
   unsigned int start_offset= 0;
   unsigned int f_index=0; // file index
 
+
   if (file = fopen(desintation, "r"))
     {
-      printf("File exists, would you like to overwrite it y/n ?  ");
+      printf("File exists, who you like to overwrite it y/n ?  ");
 
       int answer;
-      int loop=1;
-      fclose(file);
-
-      while (loop){
-
-        answer = getchar();
-
-        switch(answer){
-        case 'y':
-	  loop=0;
-          break;
-        case 'n':
-          printf("Please run Bundle again with the correct output path.\n");
-	  exit(1);
-        case 10: // \n
-          break;
-        default:
-          printf("not sure ? ;) \n (y/n) >");
+      answer = getchar();
+      if(answer == 'y')
+        {
+          fclose(file);
         }
-      }
-    }else {
-    fclose(file);
-  }
-  
+      else if (answer == 'n')
+        {
+          printf("Please run Bundle again with the correct output path.\n");
+          return 1; //user should try with correct path, exiting.
+        }
+      else
+        {
+          printf("not sure ? ;)\n");
+          return 1;
+        }
+    }
 
   pakFile = fopen(desintation,"wb+");
-  
-  printf("\n----------------\n");
+
 
   // initialize header with nuber of files
-  if ((start_offset=header_init(pakFile, fileCountForHeader)) == -1){
+    if ((start_offset=header_init(pakFile, fileCountForHeader)) == -1){
     // perror("bundler_header");
     fprintf(stderr, "Cannot initialize header...exiting\n");
     return 0;
-  }
+    }
 
   if ((ftsp = fts_open(source, fts_options, NULL)) == NULL) {
     warn("fts_open");
@@ -226,24 +218,22 @@ static int ptree(char **source, char *desintation)
               //update header
               offset_p off= malloc(sizeof(header_offset));
 
-              off->hash = __ac_X31_hash_string(fileName);
+	      off->hash = __ac_X31_hash_string(fileName);
               off->size= size;
               off->offset_start= offset;
-              header_write_offset(pakFile, off, f_index++);
-              printf("writing offset:\n");
-	      print_offset(off);
-              free(off);
+	      header_write_offset(pakFile, off, f_index++);
+	      free(off);
 
               if(tempFileName)
                 {
-                  printf("\t>The offset for %s is %d\n", tempFileName, (unsigned int)offset);
+                  printf("\t>The offset for %s is %d\n", tempFileName, offset);
                   printf("\t>The compressed size of %s is %lu\n", basename(tempFileName), size);
                   printf("\t>%s was added to the bundle\n\n", basename(tempFileName));
                   free(tempFileName);
                 }
 
               // copy the data from the temp compressed file to the pak file
-              fseek(pakFile, start_offset, SEEK_SET);
+	      fseek(pakFile, start_offset, SEEK_SET);
               while (!feof(tempFile))
                 {
                   fread(&byte, sizeof(char), 1, tempFile);
@@ -303,14 +293,14 @@ int main(int argc, char *const argv[])
 
       // try to read an offset
 
-            offset_p* offsets= header_get_offsets(tfh);
+      offset_p* offsets= header_get_offsets(tfh);
       int i=0;
 
       for (i=0; i< num_files; i++){
-              print_offset(offsets[i]);
+	print_offset(offsets[i]);
       }
 
-      //      free(offsets);
+      free(offsets);
 
       fclose(tfh);
 
