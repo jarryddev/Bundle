@@ -110,7 +110,46 @@ int compress_one_file(char *infilename, char *outfilename)
          total_read, file_size(outfilename),
          (1.0-file_size(outfilename)*1.0/total_read)*100.0);
 }
-
+/////////////////////////////////////////////////////////////
+// Function for adding pak extension 
+/////////////////////////////////////////////////////////////
+char * checkPakExtension (char *filePath)
+{
+	char *tempPath = malloc(strlen(filePath) + 4);
+	char *start = filePath;
+	strcpy(tempPath, filePath);
+	int count = strlen(filePath);
+	printf("Count is %d\n", count);
+	while(*filePath != '\0')
+	{
+		filePath++;
+	}
+	// now we are at end of filename
+	filePath--;
+	if(*filePath == 'k')
+	{
+		filePath--;
+		if(*filePath == 'a')
+		{
+			filePath--;
+			if(*filePath == 'p')
+			{
+				filePath--;
+				if(*filePath == '.')
+				{
+					printf("pak entension exists\n");
+					return start;
+				}
+			}
+		}
+	}
+	else
+	{
+		//add pak entension
+		strcat(tempPath, ".pak");
+	}
+	free(tempPath);
+}
 /////////////////////////////////////////////////////////////
 // Functions for writing asset data to pak file
 /////////////////////////////////////////////////////////////
@@ -266,7 +305,7 @@ int main(int argc, char *const argv[])
       char **sourcePath = malloc(2 * (sizeof *sourcePath));
       sourcePath[0] = malloc(strlen(argv[1]) + 1);
       if(!sourcePath[0])
-        printf("Could not start package process\n");
+      printf("Could not start package process\n");
       strcpy(sourcePath[0], argv[1]);
       sourcePath[1] = NULL;
       countFiles(sourcePath);
