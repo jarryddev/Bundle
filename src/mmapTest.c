@@ -56,8 +56,14 @@ size_t getFileSize(FILE *pakFile)
 // this maps the pak file and returns the address of the mapped data starting point
 caddr_t mapPakFile (size_t fileSize, FILE pakFile)
 {
+  	// how about skipping to the compressed data ?
+  // header_get_head(pakFile);
+
 	// map the data
 	caddr_t  mappedAddress = mmap (NULL, fileSize, PROT_READ, MAP_FILE, pakFile, 0);
+
+
+
 	if(mappedAddress == (caddr_t) -1)
 	{
 		printf("Failed to map file to virtual memory"\n);

@@ -27,7 +27,7 @@ lib:	$(OBJ) header_lib
 	ar cr $(LIB_DIR)/libbundler.a bundler.o  
 
 header: header_lib
-	$(CC) $(LIB_DIR)/libheader.a header_main.c -o header_main
+	$(CC) $(LIB_DIR)/libheader.a header_main.c -o $(BIN_DIR)/header_main -lheader $(CC_FLAGS)
 
 header_lib:	$(HEADER_OBJ)
 	ar cr $(LIB_DIR)/libheader.a header.o

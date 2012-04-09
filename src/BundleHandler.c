@@ -218,7 +218,7 @@ static int ptree(char **source, char *desintation)
               //update header
               offset_p off= malloc(sizeof(header_offset));
 
-	      off->hash = 0x0; // todo hash filename!
+	      off->hash = __ac_X31_hash_string(fileName);//0x0;// todo hash filename!
               off->size= size;
               off->offset_start= offset;
 	      header_write_offset(pakFile, off, f_index++);
@@ -302,7 +302,7 @@ int main(int argc, char *const argv[])
         free(off);
       }
 
-      close(tfh);
+      fclose(tfh);
 
       free(sourcePath[0]);
       free(sourcePath);
