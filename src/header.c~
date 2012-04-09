@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "header.h"
+#include <sys/types.h>
+#include <stdio.h>
+#include "types.h"
+
 
 /*void bin_to_int(char *str){
   int d=0;
@@ -41,7 +45,7 @@ FILE *header_file_open(char *pkg_file){
  * returns a pointer to a new struct of the offset
  * existing according to the hash key passed.
  */
-offset_p header_read_offset(FILE *fh, ub4 hash){
+offset_p header_read_offset(FILE *fh, khint_t hash){
   unsigned int i,num_files = header_get_head(fh);
 
   fseek(fh, sizeof(unsigned int), SEEK_SET);
@@ -70,11 +74,6 @@ header_offset to_offset(ub4 hash, size_t filesize){
   of.size= filesize;
   return of;
 }
-
-//void header_write_file(FILE *fh, ub4 hash, size_t filesize){
-//  offset p = to_offset(hash, filesize);
-//  header_write_offset(fh, off);
-//}
 
 void header_write_offset(FILE *fh,offset_p offp, unsigned int index){
   char *buff = malloc(sizeof(header_offset));
@@ -108,13 +107,15 @@ void small_to_big_endian_int(char **bin, unsigned int size){
 }
 
 unsigned int header_init(FILE *fh, unsigned int n_files){
-  fseek(fh, 0, SEEK_SET);
   int header_size;
   int len=fwrite(&n_files, sizeof(unsigned int), 1, fh);
+  char buff[header_size];
+
+  fseek(fh, 0, SEEK_SET);
 
   //write rubbish until end of header.
   header_size=n_files * sizeof(header_offset) + sizeof(unsigned int);
-  char buff[header_size];
+
   bzero(buff, header_size);
 
   fwrite(&buff, header_size, 1, fh);
@@ -122,7 +123,7 @@ unsigned int header_init(FILE *fh, unsigned int n_files){
 }
 
 void print_offset(offset_p off){
-  fprintf(stdout, "OFFSET: ---- \n size: %x, offset: %x, hash: %x\n", off->size, off->offset_start, off->hash);
+  fprintf(stdout, "OFFSET: ---- \n size: %u, offset: %u, hash: %u\n", off->size, off->offset_start, off->hash);
 }
 
 unsigned int header_get_head(FILE *fh){
@@ -151,25 +152,34 @@ void header_close(FILE* fh){
 }
 
 offset_p* header_get_offsets(FILE *fh){
-  
   unsigned int n_files=  header_get_head(fh),i,len;
-  offset_p* offsets;
-
-  fseek(fh, sizeof(header_offset), SEEK_SET);
+  offset_p *offsets;
+  char *buff;
   
-  if ((offsets=malloc( sizeof(header_offset)*n_files)) == NULL){
+  fseek(fh, sizeof(unsigned int), SEEK_SET);
+
+  if ((buff=malloc( sizeof(header_offset)*n_files)) == NULL){
     perror("malloc");
     return NULL;
   }
-  
-  if ((len = fread(offsets, sizeof(header_offset), n_files, fh)) == -1){
+
+  if ((len = fread(buff, sizeof(header_offset), n_files, fh)) == -1){
     perror("fread");
     return NULL;
   }
 
+  if ((offsets=malloc(sizeof(header_offset) * n_files)) == NULL){
+      perror("malloc");
+      return NULL;
+    }
+
   for (i=0; i< n_files; i++){
-    print_offset(offsets[i]);
+    memcpy(&offsets[i], &buff, sizeof(header_offset));
+    buff+= sizeof(header_offset);
   }
+  
+  buff-= sizeof(header_offset)*n_files;
+  free(buff);
 
   return offsets;
 }
