@@ -1,3 +1,7 @@
+#ifndef _HEADER_INCLUDED
+#include "header.h"
+#endif
+
 /**
 *
 * Hash table (khash) of filenames=>offsets

@@ -7,6 +7,8 @@ OBJ=*.o
 
 BIN_DIR=../bin
 HEADER_OBJ=header.o
+HASH_OBJ=hash.o
+HASH_SRC=hash.c hash.h
 HEADER_SRC=header.c header.h
 BUNDLE_SRC=BundleHandler.c BundleHandler.h
 PROG= BundleHandler
@@ -20,6 +22,9 @@ $(HEADER_OBJ):
 $(OBJ):	$(HEADER_OBJ) header_lib
 	$(CC) -c $(BUNDLE_SRC) 
 
+$(HASH_OBJ): header_lib
+	$(CC) $(CC_FLAGS) -c $(HASH_SRC)
+
 install: $(OBJ)
 	$(CC) $(OBJ) $(LINK_FLAGS) -o $(BIN_DIR)/bundle
 
@@ -31,6 +36,12 @@ header: header_lib
 
 header_lib:	$(HEADER_OBJ)
 	ar cr $(LIB_DIR)/libheader.a header.o
+
+hash_lib: $(HASH_OBJ)
+	ar cr $(LIB_DIR)/libhash.a hash.o 
+
+integrate: header_lib hash_lib
+	$(CC) -o integration -L$(LIB_DIR) -lheader -lhash
 
 run: 	clean header
 	./$(PROG)_main

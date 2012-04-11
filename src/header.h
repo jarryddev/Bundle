@@ -2,6 +2,7 @@
 #include <sys/types.h>
 #include <stdio.h>
 #include "khash.h"
+#define _HEADER_INCLUDED
 #endif
 
 /**

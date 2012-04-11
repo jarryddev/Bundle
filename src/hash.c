@@ -9,7 +9,7 @@ KHASH_MAP_INIT_INT(32, void*);
 khash_t(32) *header_hash;
 
 
-int main(int argc, char **argv){
+/*int main(int argc, char **argv){
   if (argc != 3){
     printf("Usage: %s pakfile filename\n", argv[0]);
     exit(1);
@@ -20,7 +20,7 @@ int main(int argc, char **argv){
   offset_p p= get_offset(argv[2]);
   print_offset(p);
   kh_destroy(32, header_hash);
-}
+  }*/
 
 
 /**
