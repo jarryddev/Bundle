@@ -29,5 +29,3 @@ int hash_init(char *);
  * Output the elements in the hash table.
  */
 void hash_read();
-
-void hash_destroy();

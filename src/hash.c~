@@ -11,8 +11,8 @@ khash_t(32) *header_hash;
 
 /*int main(int argc, char **argv){
   if (argc != 3){
-  printf("Usage: %s pakfile filename\n", argv[0]);
-  exit(1);
+    printf("Usage: %s pakfile filename\n", argv[0]);
+    exit(1);
   }
 
   hash_init(argv[1]);
@@ -117,14 +117,13 @@ void hash_read(){
       printf("---------------\n");
     }
   }
-}
 
-/**
- *  frees the hashmap
- */
-void hash_destroy(){
-  kh_destroy(32, header_hash);
+  /**
+   *  frees the hashmap
+   */ 
+  void hash_destroy(){
+    kh_destroy(32, header_hash);
+  }
 }
-
 
 
