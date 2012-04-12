@@ -2,6 +2,11 @@
 #include "hash.h"
 #include <stdlib.h>
 
+/* 	
+*	compile using:
+* 	gcc integration.c -o ../bin/integration -L../lib -lheader -lhash
+*/
+
 int bundle_start(char *pakFile){
   int ret;
 
