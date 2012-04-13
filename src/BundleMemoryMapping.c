@@ -43,8 +43,7 @@
 size_t size;
 
 // this maps the pak file
-int mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mData)
-{
+int mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mData){
 	unsigned char *temp;
 	unsigned int store;
 	size_t i;
@@ -82,8 +81,7 @@ int mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mDa
 	return 0;
 }
 
-void unMapPakFile (void *mappedAddress, size_t fileSize)
-{
+void unMapPakFile (void *mappedAddress, size_t fileSize){
 	if(munmap(mappedAddress, fileSize) != 0)
 	{
 		printf("Failed to unmap file.\n");
@@ -94,9 +92,7 @@ void unMapPakFile (void *mappedAddress, size_t fileSize)
 	}
 }
 
-unsigned char * 
-getDataForOffsets(void *mappedAddress, size_t startOffset, size_t numberOfBtyes)
-{
+unsigned char * getDataForOffsets(void *mappedAddress, size_t startOffset, size_t numberOfBtyes){
 	unsigned char *temp;
 	temp = (unsigned char*) mappedAddress + startOffset;
 	
@@ -116,8 +112,7 @@ getDataForOffsets(void *mappedAddress, size_t startOffset, size_t numberOfBtyes)
 	return temp;
 }
 
-int main ()
-{
+int main (){
 	
 	FILE *f;
 	int tempSize = 0;
