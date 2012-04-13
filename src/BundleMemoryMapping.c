@@ -40,10 +40,10 @@
 #include <sys/stat.h>
 #include "BundleMemoryMapping.h"
 
-size_t size = 0;
+size_t size;
 
 // this maps the pak file
-void mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mData)
+int mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mData)
 {
 	unsigned char *temp;
 	unsigned int store;
@@ -53,14 +53,14 @@ void mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mD
 	fseek(file, 0, SEEK_END);
 	mData->fileSize = ftell(file);
 	fseek(file, 0, SEEK_SET);
-	printf("File size is %lu bytes.\n", (unsigned long)fileSize);
+	printf("File size is %lu bytes.\n", (unsigned long) mData->fileSize);
 	
 	int fileDescriptor = fileno(file);
 	off_t offset = startOffset;
 	
 	// map the data
-	mData->mappedAddress = mmap(NULL, fileSize, PROT_READ, MAP_PRIVATE, fileDescriptor, offset);
-	if(mappedAddress == (void *) -1)
+	mData->mappedAddress = mmap(NULL, mData->fileSize, PROT_READ, MAP_PRIVATE, fileDescriptor, offset);
+	if(mData->mappedAddress == (void *) -1)
 	{
 		printf("Failed to map file to virtual memory.\n");
 		fclose(file);
@@ -78,8 +78,8 @@ void mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mD
 		perror ("madvise");
 	
 	fclose(file);
-	
 	//printf("Reading %lu bytes.\n", (unsigned long)fileSize);
+	return 0;
 }
 
 void unMapPakFile (void *mappedAddress, size_t fileSize)
