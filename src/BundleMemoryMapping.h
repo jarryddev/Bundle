@@ -12,7 +12,7 @@ struct mappedData {
 	void *mappedAddress;
 };
 
-int mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mData)
+int mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mData);
 void unMapPakFile (void *mappedAddress, size_t fileSize);
 
 #endif
