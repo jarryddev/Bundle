@@ -62,7 +62,7 @@ static int countFiles(char **source)
 }
 
 /////////////////////////////////////////////////////////////
-// Demonstration of zlib utility functions
+// Compression/Decompression
 /////////////////////////////////////////////////////////////
 unsigned long file_size(char *filename)
 {
@@ -150,6 +150,42 @@ char * checkPakExtension (char *filePath)
 	}
 	free(tempPath);
 }
+/////////////////////////////////////////////////////////////
+// Function for checking file Extension
+/////////////////////////////////////////////////////////////
+int shouldCompressFileType(char *filePath)
+{
+	char *extension;
+	char *extTemp;
+	int extLength = 0;
+	
+	while(filePath != '\0')
+	{
+		filePath++;
+	}
+	while(filePath != '.')
+	{
+		filepath--;
+		extLength++;
+	}
+	printf("Extension length is %d\n", extLength);
+	extLength -= 1;
+	extension = malloc(sizeOf(char) * extLength);
+	*extension = filepath++;
+	while(filepath != '\0')
+	{
+		*extension++ = filepath++;
+	}
+	int i;
+	for(i = 0; i < extLength; i--)
+	{
+		extension--;
+	}
+	printf("Extension is :%s\n", extension);
+	return 1;
+}
+
+
 /////////////////////////////////////////////////////////////
 // Functions for writing asset data to pak file
 /////////////////////////////////////////////////////////////
