@@ -68,7 +68,7 @@ int shouldCompressFileType(char *filePath)
 }
 
 /* usage example */
-
+/*
 int main(void)
 {	
 	int shouldCompressBool;
@@ -87,3 +87,4 @@ int main(void)
 	}
 	return 1;
 }
+*/
