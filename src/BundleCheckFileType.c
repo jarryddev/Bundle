@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 /////////////////////////////////////////////////////////////
 // Function for checking file Extension
 // should compress file: return 1 for yes, 0 for no
@@ -65,6 +62,8 @@ int shouldCompressFileType(char *filePath)
 	return 0;
 }
 
+/* usage example */
+/*
 int main(void)
 {	
 	int shouldCompressBool;
@@ -83,3 +82,4 @@ int main(void)
 	}
 	return 1;
 }
+*/
