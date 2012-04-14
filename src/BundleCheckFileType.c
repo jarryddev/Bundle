@@ -1,13 +1,12 @@
+#include "BundleCheckFileType.h"
+
 /////////////////////////////////////////////////////////////
 // Function for checking file Extension
 // should compress file: return 1 for yes, 0 for no
 /////////////////////////////////////////////////////////////
 int shouldCompressFileType(char *filePath)
 {
-	char *extension;
-	char *extTemp;
-	int extLength = 0;
-	
+	int extLength = 0;	
 	while(*filePath != '\0')
 	{
 		filePath++;
@@ -19,7 +18,8 @@ int shouldCompressFileType(char *filePath)
 	}
 	extLength -= 1;
 	printf("Extension length is %d\n", extLength);
-	extension = malloc(extLength * sizeof(char));
+	char *tmpExt = malloc(extLength * sizeof(char));
+	char *extension = tmpExt;
 	extension = filePath++;
 	while(*filePath != '\0')
 	{
@@ -33,37 +33,42 @@ int shouldCompressFileType(char *filePath)
 	}
 	printf("Extension is: %s\n", extension);
 	
+	int shouldCompress = 0;
+	
 	//Add extension checks here:
 	// possibly only files that need to be compressed
 	if(strcmp("png", extension) == 0)
 	{
 		printf("png file\n");	
-		return 1;
+		shouldCompress = 1;
 	}
 	else if(strcmp("jpeg", extension) == 0)
 	{
 		printf("jpeg file\n");
-		return 1;
+		shouldCompress = 1;
 	}
 	else if(strcmp("ogg", extension) == 0)
 	{
 		printf("ogg file\n");
-		return 1;
+		shouldCompress = 1;
 	}
 	else if(strcmp("wav", extension) == 0)
 	{
 		printf("wav file\n");
-		return 1;
+		shouldCompress = 1;
 	}     
 	/* add more file types here */
 	else /* if file not here, dont compress */
-		return 0;
+	{
+		shouldCompress = 0;
+	}	
 	
-	return 0;
+	free(tmpExt);
+	return shouldCompress;
 }
 
 /* usage example */
-/*
+
 int main(void)
 {	
 	int shouldCompressBool;
@@ -82,4 +87,3 @@ int main(void)
 	}
 	return 1;
 }
-*/
