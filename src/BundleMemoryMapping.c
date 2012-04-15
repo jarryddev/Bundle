@@ -111,7 +111,7 @@ unsigned char * getDataForOffsets(void *mappedAddress, size_t startOffset, size_
   fclose(sampleFile);
   return temp;
 }
-
+/*
 int main (){
 
   FILE *f;
@@ -138,3 +138,4 @@ int main (){
 
   return 0;
 }
+*/
