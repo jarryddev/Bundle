@@ -53,7 +53,7 @@ hash_lib: $(HASH_OBJ)
 	ar cr $(LIB_DIR)/libhash.a hash.o 
 
 integrate: header_lib hash_lib mmap_lib
-	$(CC) -o $(BIN_DIR)/integration -L$(LIB_DIR) -lhash -lheader -lbundlemmap
+	$(CC) -o $(BIN_DIR)/integration -L$(LIB_DIR) -lhash -lheader -lbundlemmap integration.c
 
 run: 	clean header
 	./$(PROG)_main
