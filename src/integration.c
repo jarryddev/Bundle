@@ -41,9 +41,15 @@ int bundle_stop(struct mappedData *mData){
 // This will be done within an objective-C file
 int main(int argc, char **argv){
 
+	/* Data needed by the dev to use Bundle
+	*	 char * with the pak filename
+	*  struct mappedData which holds mappedAddress and fileSize
+	*  both are used for the bundle_stop function when munmapping
+	*/
+	
   char *filename = "test.pak";
   struct mappedData *mData;
-	mData = malloc(sizeof(struct mappedData));
+	mData = malloc(sizeof(struct mappedData)); /*free when done */
 
   bundle_start(filename, mData);
 
