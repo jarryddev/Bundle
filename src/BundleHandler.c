@@ -22,6 +22,20 @@
 const char ext_to_ignore[] = ".DS_Store .exe";
 static unsigned int fileCountForHeader=0;
 
+
+
+/////////////////////////////////////////////////////////////
+// Returns a pointer to the filename in a fullpath passed.
+/////////////////////////////////////////////////////////////
+char *filename(char *path){
+  char *t;
+  printf("length: %ld\n", strlen(path));
+  while ( (t=strchr(path, '/')) != NULL){
+    path=++t;
+  }
+  return path;
+}
+
 /////////////////////////////////////////////////////////////
 // Count the number of files for header length calculation
 /////////////////////////////////////////////////////////////
@@ -111,78 +125,78 @@ int compress_one_file(char *infilename, char *outfilename)
          (1.0-file_size(outfilename)*1.0/total_read)*100.0);
 }
 /////////////////////////////////////////////////////////////
-// Function for adding pak extension 
+// Function for adding pak extension
 /////////////////////////////////////////////////////////////
 char * checkPakExtension (char *filePath)
 {
-	char *tempPath = malloc(strlen(filePath) + 4);
-	char *start = filePath;
-	strcpy(tempPath, filePath);
-	int count = strlen(filePath);
-	printf("Count is %d\n", count);
-	while(*filePath != '\0')
-	{
-		filePath++;
-	}
-	// now we are at end of filename
-	filePath--;
-	if(*filePath == 'k')
-	{
-		filePath--;
-		if(*filePath == 'a')
-		{
-			filePath--;
-			if(*filePath == 'p')
-			{
-				filePath--;
-				if(*filePath == '.')
-				{
-					printf("pak entension exists\n");
-					return start;
-				}
-			}
-		}
-	}
-	else
-	{
-		//add pak entension
-		strcat(tempPath, ".pak");
-	}
-	free(tempPath);
+  char *tempPath = malloc(strlen(filePath) + 4);
+  char *start = filePath;
+  strcpy(tempPath, filePath);
+  int count = strlen(filePath);
+  printf("Count is %d\n", count);
+  while(*filePath != '\0')
+    {
+      filePath++;
+    }
+  // now we are at end of filename
+  filePath--;
+  if(*filePath == 'k')
+    {
+      filePath--;
+      if(*filePath == 'a')
+        {
+          filePath--;
+          if(*filePath == 'p')
+            {
+              filePath--;
+              if(*filePath == '.')
+                {
+                  printf("pak entension exists\n");
+                  return start;
+                }
+            }
+        }
+    }
+  else
+    {
+      //add pak entension
+      strcat(tempPath, ".pak");
+    }
+  free(tempPath);
 }
 /////////////////////////////////////////////////////////////
 // Function for checking file Extension
 /////////////////////////////////////////////////////////////
 int shouldCompressFileType(char *filePath)
 {
-	char *extension;
-	char *extTemp;
-	int extLength = 0;
-	
-	while(filePath != '\0')
-	{
-		filePath++;
-	}
-	while(filePath != '.')
-	{
-		filepath--;
-		extLength++;
-	}
-	printf("Extension length is %d\n", extLength);
-	extLength -= 1;
-	extension = malloc(sizeOf(char) * extLength);
-	*extension = filepath++;
-	while(filepath != '\0')
-	{
-		*extension++ = filepath++;
-	}
-	int i;
-	for(i = 0; i < extLength; i--)
-	{
-		extension--;
-	}
-	printf("Extension is :%s\n", extension);
-	return 1;
+  char *extension;
+  char *extTemp;
+  int extLength = 0;
+
+  while(filePath != '\0')
+    {
+      filePath++;
+    }
+  while(filePath != '.')
+    {
+      filePath--;
+      extLength++;
+    }
+  printf("Extension length is %d\n", extLength);
+  extLength -= 1;
+  extension = malloc(sizeof(char) * extLength);
+  *extension = filePath++;
+  while(filePath != '\0')
+    {
+      *extension++ = filePath++;
+    }
+  int i;
+  for(i = 0; i < extLength; i--)
+    {
+      extension--;
+    }
+  printf("Extension is :%s\n", extension);
+  return 1;
 }
 
 
@@ -220,11 +234,11 @@ static int ptree(char **source, char *desintation)
 
         switch(answer){
         case 'y':
-	  loop=0;
+          loop=0;
           break;
         case 'n':
           printf("Please run Bundle again with the correct output path.\n");
-	  exit(1);
+          exit(1);
         case 10: // \n
           break;
         default:
@@ -234,10 +248,10 @@ static int ptree(char **source, char *desintation)
     }else {
     fclose(file);
   }
-  
+
 
   pakFile = fopen(desintation,"wb+");
-  
+
   printf("\n----------------\n");
 
   // initialize header with nuber of files
@@ -301,12 +315,13 @@ static int ptree(char **source, char *desintation)
               //update header
               offset_p off= malloc(sizeof(header_offset));
 
-              off->hash = __ac_X31_hash_string(fileName);
+
+              off->hash = __ac_X31_hash_string( filename(fileName) );
               off->size= size;
               off->offset_start= offset;
               header_write_offset(pakFile, off, f_index++);
               printf("writing offset:\n");
-	      print_offset(off);
+              print_offset(off);
               free(off);
 
               if(tempFileName)
@@ -351,7 +366,7 @@ int main(int argc, char *const argv[])
       char **sourcePath = malloc(2 * (sizeof *sourcePath));
       sourcePath[0] = malloc(strlen(argv[1]) + 1);
       if(!sourcePath[0])
-      printf("Could not start package process\n");
+        printf("Could not start package process\n");
       strcpy(sourcePath[0], argv[1]);
       sourcePath[1] = NULL;
       countFiles(sourcePath);
@@ -378,11 +393,11 @@ int main(int argc, char *const argv[])
 
       // try to read an offset
 
-            offset_p* offsets= header_get_offsets(tfh);
+      offset_p* offsets= header_get_offsets(tfh);
       int i=0;
 
       for (i=0; i< num_files; i++){
-              print_offset(offsets[i]);
+        print_offset(offsets[i]);
       }
 
       //      free(offsets);
