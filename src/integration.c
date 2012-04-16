@@ -12,12 +12,11 @@ int bundle_start(char *pakFile, struct mappedData *mData){
   int ret;
 
   // hash file
-  if ((ret=hash_init(pakFile)) == 1){
-    printf("%s Hashed....\n", pakFile);
-  } else {
+  if ((ret=hash_init(pakFile)) != 1){
     printf("Filed hashing %s, quitting...\n", pakFile);
     return -1;
   }
+  
   // map file...
   if(mapPakFile(pakFile, 0, mData) != 0)
     {
@@ -50,13 +49,22 @@ int main(int argc, char **argv){
   char *filename = "test.pak";
   struct mappedData *mData;
 	mData = malloc(sizeof(struct mappedData)); /*free when done */
+	offset_p offs;
 
   bundle_start(filename, mData);
 
+  //  hash_read();
+
   //  get test.jpg offset and print it
-  //    offset_p offs = get_offset("test.jpg"); //bundle_getIndexDataFor("test.jpg");
-    //  print_offset(offs);
-  //  free(offs);
+  if ((offs = get_offset("Sample.png")) == NULL){
+    printf("Error: Cannot locate test.jpg\n");
+    free(mData);
+    return 1;
+  }; //bundle_getIndexDataFor("test.jpg");
+
+  printf("Key found\n");
+  print_offset(offs);
+  free(offs);
   
   /* Run Game Code From here */
 

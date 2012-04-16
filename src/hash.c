@@ -3,7 +3,7 @@
 #include "hash.h"
 
 // initialize the hashmap type
-KHASH_MAP_INIT_INT(32, void*);
+KHASH_MAP_INIT_INT(32, offset_p);
 
 // GLOBAL HASH TABLE
 khash_t(32) *header_hash;
@@ -55,7 +55,9 @@ int hash_init(char *filename){
   for (i=0; i< num_files;i++){
     t= offsets[i]->hash;
     k=kh_put(32, header_hash, t, &ret); // creating key
-    ((header_hash)->vals[k]) = offsets[i]; // assigning value 
+    // free(((header_hash)->vals[k])); // free what khash allocated
+    ((header_hash)->vals[k]) = malloc(sizeof(header_offset));
+    memcpy(&((header_hash)->vals[k]), &offsets[i], sizeof(header_offset)); // assigning value
   }
 
   free(offsets);
@@ -118,6 +120,14 @@ void hash_read(){
  *  frees the hashmap
  */
 void hash_destroy(){
+  khiter_t iter;
+
+  for (iter = kh_begin(header_hash); iter != kh_end(header_hash); iter++){
+    if (kh_exist(header_hash, iter)) {
+      free(kh_value(header_hash, iter));
+    }
+  }
+
   kh_destroy(32, header_hash);
 }
 
