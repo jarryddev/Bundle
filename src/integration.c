@@ -18,10 +18,8 @@ int bundle_start(char *pakFile, struct mappedData *mData){
     printf("Filed hashing %s, quitting...\n", pakFile);
     return -1;
   }
-
   // map file...
-  char *mappedFile = mapPakFile(pakFile, 0, mData);
-  if(mappedFile == NULL)
+  if(mapPakFile(pakFile, 0, mData) != 0)
     {
       printf("Failed to map file %s", pakFile);
       return -1;
@@ -45,6 +43,7 @@ int main(int argc, char **argv){
 
   char *filename = "test.pak";
   struct mappedData *mData;
+	mData = malloc(sizeof(struct mappedData));
 
   bundle_start(filename, mData);
 

@@ -44,7 +44,6 @@ size_t size;
 
 // this maps the pak file
 int mapPakFile(const char *fileToOpen, long startOffset, struct mappedData *mData){
-	printf("Starting mapPakFile function\n");
 	unsigned char *temp;
   	unsigned int store;
   	size_t i;
