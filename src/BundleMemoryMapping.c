@@ -44,41 +44,42 @@ size_t size;
 
 // this maps the pak file
 int mapPakFile(const char *fileToOpen, long startOffset, struct mappedData *mData){
-  unsigned char *temp;
-  unsigned int store;
-  size_t i;
+	printf("Starting mapPakFile function\n");
+	unsigned char *temp;
+  	unsigned int store;
+  	size_t i;
 
-  FILE *file = fopen(fileToOpen, "rb");
-  fseek(file, 0, SEEK_END);
-  mData->fileSize = ftell(file);
-  fseek(file, 0, SEEK_SET);
-  printf("File size is %lu bytes.\n", (unsigned long) mData->fileSize);
+  	FILE *file = fopen(fileToOpen, "rb");
+  	fseek(file, 0, SEEK_END);
+  	mData->fileSize = ftell(file);
+  	fseek(file, 0, SEEK_SET);
+  	printf("File size is %lu bytes.\n", (unsigned long) mData->fileSize);
 
-  int fileDescriptor = fileno(file);
-  off_t offset = startOffset;
+  	int fileDescriptor = fileno(file);
+  	off_t offset = startOffset;
 
-  // map the data
-  mData->mappedAddress = mmap(NULL, mData->fileSize, PROT_READ, MAP_PRIVATE, fileDescriptor, offset);
-  if(mData->mappedAddress == (void *) -1)
-    {
-      printf("Failed to map file to virtual memory.\n");
-      fclose(file);
-      return NULL;
-    }
-  printf("Successfully mapped file to virtual memory.\n");
-  printf("Starting Mapped Address is: %X \n", (char *) mData->mappedAddress);
+  	// map the data
+  	mData->mappedAddress = mmap(NULL, mData->fileSize, PROT_READ, MAP_PRIVATE, fileDescriptor, offset);
+  	if(mData->mappedAddress == (void *) -1)
+    	{
+      	printf("Failed to map file to virtual memory.\n");
+      	fclose(file);
+      	return NULL;
+    	}
+  	printf("Successfully mapped file to virtual memory.\n");
+  	printf("Starting Mapped Address is: %X \n", (char *) mData->mappedAddress);
 
-  // use this for optimizing the kernel for our intended use of the mapped data
-  int ret;
-  // tell kernel how we use data from addr -> addr + len
-  // MADV_RANDOM  disables readahead, reads minimum data on each read
-  ret = madvise (mData->mappedAddress, mData->fileSize, MADV_RANDOM);
-  if (ret < 0)
-    perror ("madvise");
+  	// use this for optimizing the kernel for our intended use of the mapped data
+  	int ret;
+  	// tell kernel how we use data from addr -> addr + len
+  	// MADV_RANDOM  disables readahead, reads minimum data on each read
+  	ret = madvise (mData->mappedAddress, mData->fileSize, MADV_RANDOM);
+  	if (ret < 0)
+    	perror ("madvise");
 
-  fclose(file);
-  //printf("Reading %lu bytes.\n", (unsigned long)fileSize);
-  return 0;
+  	fclose(file);
+  	//printf("Reading %lu bytes.\n", (unsigned long)fileSize);
+  	return 0;
 }
 
 void unMapPakFile (void *mappedAddress, size_t fileSize){
