@@ -317,6 +317,7 @@ static int ptree(char **source, char *desintation)
 
 
               off->hash = __ac_X31_hash_string( filename(fileName) );
+
               off->size= size;
               off->offset_start= offset;
               header_write_offset(pakFile, off, f_index++);

@@ -54,13 +54,8 @@ int hash_init(char *filename){
 
   for (i=0; i< num_files;i++){
     t= offsets[i]->hash;
-    //    printf("Pushing offset: \n");
-
     k=kh_put(32, header_hash, t, &ret); // creating key
-    ((header_hash)->vals[k]) = offsets[i];  // setting value  todo: offsets[i]->hash is saved incorrectly.
-    //    ((header_hash)->vals[k]) = malloc(sizeof(header_offset)); // offsets[i];  // setting value
-    //    memcpy((&(header_hash)->vals[k]), &offsets[i], sizeof(header_offset));
-    //    print_offset((header_hash)->vals[k]);
+    ((header_hash)->vals[k]) = offsets[i]; // assigning value 
   }
 
   free(offsets);
