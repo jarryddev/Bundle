@@ -59,7 +59,7 @@ offset_p header_read_offset(FILE *fh, khint_t hash){
     fread(buff, sizeof(header_offset), 1, fh);
     memcpy(&offp->hash        , buff                            , sizeof(ub4));
     memcpy(&offp->offset_start, buff+sizeof(ub4)              , sizeof(off_t));
-    memcpy(&offp->size        , buff+sizeof(ub4)+sizeof(off_t), sizeof(size_t));
+    memcpy(&offp->size        , buff+sizeof(khint_t)+sizeof(off_t), sizeof(size_t));
     free(buff);
 
     if (offp->hash == hash) return offp;

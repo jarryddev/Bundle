@@ -56,7 +56,7 @@ int main(int argc, char **argv){
   //  hash_read();
 
   //  get test.jpg offset and print it
-  if ((offs = get_offset("Sample.png")) == NULL){
+  if ((offs = get_offset("test.jpg")) == NULL){
     printf("Error: Cannot locate test.jpg\n");
     free(mData);
     return 1;
