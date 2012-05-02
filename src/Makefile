@@ -61,4 +61,4 @@ run: 	clean header
 	hexdump file.pak
 
 clean:
-	-rm -f *.o *.a bundle $(LIB_DIR)/*.a
+	-rm -f *.o *.a bundle $(LIB_DIR)/*.a *.gch *~
