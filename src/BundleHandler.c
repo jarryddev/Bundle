@@ -289,7 +289,8 @@ static int ptree(char **source, char *desintation)
             }
           else
             {
-              printf("\t>file: %s\n", p->fts_path);
+
+	      printf("\t>file: %s\n", p->fts_path);
               printData(pakFile, p->fts_path);
 
               // compress the fts_path file and write
@@ -313,17 +314,14 @@ static int ptree(char **source, char *desintation)
               char *tempFileName = strdup(fileName);
 
               //update header
-              offset_p off= malloc(sizeof(header_offset));
+	      //              offset_p off= malloc(HEADER_OFFSET_SIZE);
+	      header_offset off;
 
+              off.hash = __ac_X31_hash_string( filename(fileName) );
+              off.size= size;
+              off.offset_start= offset;
 
-              off->hash = __ac_X31_hash_string( filename(fileName) );
-
-              off->size= size;
-              off->offset_start= offset;
-              header_write_offset(pakFile, off, f_index++);
-              printf("writing offset:\n");
-              print_offset(off);
-              free(off);
+              header_write_offset(pakFile, &off, f_index++);
 
               if(tempFileName)
                 {
@@ -385,26 +383,7 @@ int main(int argc, char *const argv[])
           printf("Bundle created: %s\n", destination);
         }
 
-
-      // header file tests...
-      FILE *tfh = fopen(destination, "rb+");
-
-      unsigned int num_files  = header_get_head(tfh);
-      printf("header :: num files : %d\n", num_files);
-
-      // try to read an offset
-
-      offset_p* offsets= header_get_offsets(tfh);
-      int i=0;
-
-      for (i=0; i< num_files; i++){
-        print_offset(offsets[i]);
-      }
-
-      //      free(offsets);
-
-      fclose(tfh);
-
+      
       free(sourcePath[0]);
       free(sourcePath);
       free(destination);
