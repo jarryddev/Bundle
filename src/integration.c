@@ -29,6 +29,7 @@ int bundle_start(char *pakFile, struct mappedData *mData){
 
 offset_p bundle_getIndexDataFor(char *fileName)
 {
+	printf("Returned offset is %lu", (unsigned long) get_offset(fileName));
   return get_offset(fileName);
 }
 
