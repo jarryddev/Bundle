@@ -29,7 +29,7 @@ int bundle_start(char *pakFile, struct mappedData *mData){
 
 offset_p bundle_getIndexDataFor(char *fileName)
 {
-	printf("Returned offset is %lu", (unsigned long) get_offset(fileName));
+	printf("Returned offset is %lu\n", get_offset(fileName));
   return get_offset(fileName);
 }
 
@@ -61,7 +61,9 @@ int main(int argc, char **argv){
     printf("Error: Cannot locate test.jpg\n");
     free(mData);
     return 1;
-  }; //bundle_getIndexDataFor("test.jpg");
+  }; 
+
+	bundle_getIndexDataFor("test.jpg");
 
   printf("Key found\n");
   print_offset(offs);
