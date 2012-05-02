@@ -27,20 +27,14 @@ int bundle_start(char *pakFile, struct mappedData *mData){
 
 }
 
-long int bundle_getIndexDataFor(char *fileName)
+offset_p bundle_getIndexDataFor(char *fileName)
 {
   offset_p offs;
-  long int offset;
-  
-  //  get test.jpg offset and print it
-  if ((offs = get_offset(fileName)) == NULL) return -1;
 
-  //  bundle_getIndexDataFor(fileName);
-  print_offset(offs);
-  offset= offs->offset_start;
-  free(offs);
+  //  get fileName offset and print it
+  if ((offs = get_offset(fileName)) == NULL) return NULL;
   
-  return offset;
+  return offs;
 }
 
 int bundle_stop(struct mappedData *mData){
@@ -71,14 +65,15 @@ int main(int argc, char **argv){
 
   bundle_start(filename, mData);
   
-  if ((offset=bundle_getIndexDataFor(file_to_locate)) == -1){
+  if ((offs=bundle_getIndexDataFor(file_to_locate)) == NULL){
     printf("%s not found\n", file_to_locate);
   }
   
-  printf("%s Found:\n\tOffset: %ld\n", file_to_locate, offset);
+  printf("%s Found:\n", file_to_locate);
+  print_offset(offs);
 
   free(mData);
-  
+  free(offs);
   /* Run Game Code From here */
   
   /* When done stop Bundle
