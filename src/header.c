@@ -106,6 +106,7 @@ offset_p header_read_offset(FILE *fh, khint_t hash){
     memcpy(&offp->hash        , buff                            , sizeof(khint_t));
     memcpy(&offp->offset_start, buff+sizeof(khint_t)              , sizeof(long int));
     memcpy(&offp->size        , buff+sizeof(khint_t)+sizeof(long int), sizeof(size_t));
+    memcpy(&offp->compressed   , buff+sizeof(khint_t)+sizeof(long int)+sizeof(size_t), sizeof(char));
     free(buff);
 
     if (offp->hash == hash) return offp;
@@ -126,6 +127,7 @@ void header_write_offset(FILE *fh, offset_p offp, unsigned int index){
   bzero(buff, HEADER_OFFSET_SIZE);
 
   // fill up buffer
+  memcpy(buff + sizeof(khint_t) + sizeof(long int) + sizeof(size_t), (void *)&offp->compressed, sizeof(char));
   memcpy(buff + sizeof(khint_t) + sizeof(long int), (void*)&offp->size, sizeof(size_t));
   memcpy(buff + sizeof(khint_t), (void *)&offp->offset_start, sizeof(long int));
   memcpy(buff, (void *)&offp->hash, sizeof(khint_t));
@@ -178,7 +180,7 @@ unsigned int header_init(FILE *fh, unsigned int n_files){
 }
 
 void print_offset(offset_p off){
-  printf("OFFSET: ---- \n size: %p, offset: %p, hash: %p\n", (size_t)off->size, (long int)off->offset_start, (khint_t)off->hash);
+  printf("OFFSET: ---- \n size: %p, offset: %p, hash: %p, compressed: %d\n", (size_t)off->size, (long int)off->offset_start, (khint_t)off->hash, (int)off->compressed);
 }
 
 unsigned int header_get_head(FILE *fh){
@@ -246,6 +248,7 @@ offset_p* header_get_offsets(FILE *fh){
     buff+= sizeof(long int);
     memcpy(&(*offsets[i]).size, buff, sizeof(size_t));
     buff+=sizeof(size_t);
+    memcpy(&(*offsets[i]).compressed, buff, sizeof(char));
     
     //    printf("hash read: %p\n", t_offsets[i].hash);
     //    printf("offset start read: %p\n", t_offsets[i].offset_start);
