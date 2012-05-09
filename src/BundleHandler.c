@@ -338,12 +338,13 @@ int main(int argc, char *const argv[])
 				printf("No extenstions to compress\n");
 			}
 			char *extensions[7];
+			extensions = malloc(sizeof(char *) argCount);
 			//get number of compression extension types passed in
 			int argCount = argc - 3;
 			int index;
 			for(index = 0; index < argCount; index++)
 			{
-				extensions[index] = argv[3 + index];
+				extensions[index] = argv[2 + index];
 			}
       
 			printf("\n"); // this adds a space for readability in terminal
