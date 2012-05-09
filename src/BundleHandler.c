@@ -18,6 +18,7 @@
 #include "zlib.h"
 #include "header.h"
 #include "BundleHandler.h"
+#include "BundleCheckFileType.c"
 
 const char ext_to_ignore[] = ".DS_Store .exe";
 static unsigned int fileCountForHeader=0;
@@ -164,41 +165,6 @@ char * checkPakExtension (char *filePath)
     }
   free(tempPath);
 }
-/////////////////////////////////////////////////////////////
-// Function for checking file Extension
-/////////////////////////////////////////////////////////////
-int shouldCompressFileType(char *filePath)
-{
-  char *extension;
-  char *extTemp;
-  int extLength = 0;
-
-  while(filePath != '\0')
-    {
-      filePath++;
-    }
-  while(filePath != '.')
-    {
-      filePath--;
-      extLength++;
-    }
-  printf("Extension length is %d\n", extLength);
-  extLength -= 1;
-  extension = malloc(sizeof(char) * extLength);
-  *extension = filePath++;
-  while(filePath != '\0')
-    {
-      *extension++ = filePath++;
-    }
-  int i;
-  for(i = 0; i < extLength; i--)
-    {
-      extension--;
-    }
-  printf("Extension is :%s\n", extension);
-  return 1;
-}
-
 
 /////////////////////////////////////////////////////////////
 // Functions for writing asset data to pak file
@@ -208,7 +174,7 @@ void printData(FILE *someFile, char *text)
   fprintf(someFile,"%s\n", text); /*writes*/
 }
 
-static int ptree(char **source, char *desintation)
+static int packageSourceFolder(char **source, char *desintation, char *extensions[])
 {
   FTS *ftsp;
   FTSENT *p, *chp;
@@ -283,24 +249,29 @@ static int ptree(char **source, char *desintation)
           printData(pakFile, p->fts_path);
           break;
         case FTS_F:
-          if(strstr(p->fts_path, ext_to_ignore) != NULL) //ignore DS_Store files on mac
+          if(strstr(p->fts_path, ext_to_ignore) != NULL) //ignore DS_Store and exe
             {
-              printf("Found DS_Store file, ignoring. Mac ftw?\n");
+              printf("Found file to ignore: %s\n", p->fts_path);
             }
           else
             {
-
-	      printf("\t>file: %s\n", p->fts_path);
+	      			printf("\t>file: %s\n", p->fts_path);
               printData(pakFile, p->fts_path);
 
-              // compress the fts_path file and write
-              // the compressed data one to pak file
-              compress_one_file(p->fts_path, "temp.txt");
-
-              // get the data from the file
-              FILE *tempFile;
-              tempFile = fopen("temp.txt","rb");
-
+							FILE *tempFile;
+							
+							if(shouldCompressFileType(p->fts_path, extensions) == 1)
+							{
+								/* 	compress the fts_path file and write
+	               		the compressed data one to pak file
+	              */
+								compress_one_file(p->fts_path, "temp.txt");
+	 							tempFile = fopen("temp.txt","rb");
+							}
+              else
+							{
+									tempFile = fopen(p->fts_path,"rb");
+							}
               char byte;
               off_t offset = ftell(pakFile);
 
@@ -309,13 +280,12 @@ static int ptree(char **source, char *desintation)
               long size = ftell(tempFile);
               fseek(tempFile, 0L, SEEK_SET);
 
-              // print the file info
               char *fileName = p->fts_path;
               char *tempFileName = strdup(fileName);
 
               //update header
-	      //              offset_p off= malloc(HEADER_OFFSET_SIZE);
-	      header_offset off;
+	      			//offset_p off= malloc(HEADER_OFFSET_SIZE);
+	      			header_offset off;
 
               off.hash = __ac_X31_hash_string( filename(fileName) );
               off.size= size;
@@ -323,6 +293,7 @@ static int ptree(char **source, char *desintation)
 
               header_write_offset(pakFile, &off, f_index++);
 
+							// print the file info
               if(tempFileName)
                 {
                   printf("\t>The offset for %s is %d\n", tempFileName, (unsigned int)offset);
@@ -342,8 +313,9 @@ static int ptree(char **source, char *desintation)
 
               fclose(tempFile); // done!
 
+							//delete the temporary file
               if (remove("temp.txt") == -1)
-                perror("Error in deleting a file");
+                perror("Error in deleting temp file");
               break;
             }
         default:
@@ -359,10 +331,24 @@ int main(int argc, char *const argv[])
 {
   int rc;
 
-  if(argc == 3)
+  if(argc >= 3)
     {
-      printf("\n"); // this adds a space for readability in terminal
-      char **sourcePath = malloc(2 * (sizeof *sourcePath));
+			if(argc == 3)
+			{
+				printf("No extenstions to compress\n");
+			}
+			char *extensions[7];
+			//get number of compression extension types passed in
+			int argCount = argc - 3;
+			int index;
+			for(index = 0; index < argCount; index++)
+			{
+				extensions[index] = argv[3 + index];
+			}
+      
+			printf("\n"); // this adds a space for readability in terminal
+      
+			char **sourcePath = malloc(2 * (sizeof *sourcePath));
       sourcePath[0] = malloc(strlen(argv[1]) + 1);
       if(!sourcePath[0])
         printf("Could not start package process\n");
@@ -373,7 +359,7 @@ int main(int argc, char *const argv[])
       char *destination = malloc(strlen(argv[2]));
       strcpy(destination, argv[2]);
 
-      if((rc = ptree(sourcePath, destination) != 0))
+      if((rc = packageSourceFolder(sourcePath, destination, extensions) != 0))
         {
           printf("Failed to create Bundle\n");
           rc = 1;
@@ -382,8 +368,6 @@ int main(int argc, char *const argv[])
         {
           printf("Bundle created: %s\n", destination);
         }
-
-      
       free(sourcePath[0]);
       free(sourcePath);
       free(destination);

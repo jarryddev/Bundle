@@ -4,7 +4,7 @@
 // Function for checking file Extension
 // should compress file? return 1 for yes, 0 for no
 /////////////////////////////////////////////////////////////
-int shouldCompressFileType(char *filePath)
+int shouldCompressFileType(char *filePath, char *extensions[])
 {
 	int extLength = 0;	
 	while(*filePath != '\0')
@@ -35,33 +35,39 @@ int shouldCompressFileType(char *filePath)
 	
 	int shouldCompress = 0;
 	
+	// print passed in extensions
+	char **j = extensions;
+	while(*j)
+	{
+		printf("%s", *j);
+		if(strcmp(*j, extension))
+		{
+			// matched the extension, compress
+			shouldCompress = 1;
+		}
+		else
+			shouldCompress = 0;
+		j++;
+	}
+	
+	/* NOTE: Use this for hard coding the file extensions to compress
 	//Add extension checks here:
 	// possibly only files that need to be compressed
-	if(strcmp("png", extension) == 0)
-	{
-		printf("png file\n");	
-		shouldCompress = 1;
-	}
-	else if(strcmp("jpeg", extension) == 0)
-	{
-		printf("jpeg file\n");
-		shouldCompress = 1;
-	}
-	else if(strcmp("ogg", extension) == 0)
-	{
-		printf("ogg file\n");
-		shouldCompress = 1;
-	}
-	else if(strcmp("wav", extension) == 0)
-	{
-		printf("wav file\n");
-		shouldCompress = 1;
-	}     
-	/* add more file types here */
-	else /* if file not here, dont compress */
+	
+	// Example ->
+	// if(strcmp("txt", extension) == 0)
+	// 	{
+	// 		printf("txt file\n");	
+	// 		shouldCompress = 1;
+	// 	}
+	
+	// add more file types here
+	
+	else // if file not here, dont compress
 	{
 		shouldCompress = 0;
 	}	
+	*/
 	
 	free(tmpExt);
 	return shouldCompress;
