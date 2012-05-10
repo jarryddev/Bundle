@@ -115,6 +115,14 @@ offset_p header_read_offset(FILE *fh, khint_t hash){
   return NULL;
 }
 
+offset_p get_vm_offst(FILE *fh, khint_t hash, long int vm_address){
+  offset_p offp = header_read_offset(fh, hash);
+  if (offp == NULL) return NULL;
+
+  offp->offset_start+= vm_address;
+  return offp;
+}
+
 header_offset to_offset(khint_t hash, size_t filesize){
   header_offset of;
   of.hash= hash;
