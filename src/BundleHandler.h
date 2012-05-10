@@ -24,6 +24,6 @@ int compress_one_file(char *infilename, char *outfilename);
 // Functions for writing asset data to pak file
 /////////////////////////////////////////////////////////////
 void printData(FILE *someFile, char *text);
-static int packageSourceFolder(char **source, char *desintation, char *extenstions[]);
+static int packageSourceFolder(char **source, char *desintation, char *extenstions[], int extCount);
 
 #endif

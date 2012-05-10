@@ -4,7 +4,7 @@
 // Function for checking file Extension
 // should compress file? return 1 for yes, 0 for no
 /////////////////////////////////////////////////////////////
-int shouldCompressFileType(char *filePath, char *extensions[])
+int shouldCompressFileType(char *filePath, char *extensions[], int extCount)
 {
 	int extLength = 0;	
 	while(*filePath != '\0')
@@ -17,7 +17,6 @@ int shouldCompressFileType(char *filePath, char *extensions[])
 		extLength++;
 	}
 	extLength -= 1;
-	printf("Extension length is %d\n", extLength);
 	char *tmpExt = malloc(extLength * sizeof(char));
 	char *extension = tmpExt;
 	extension = filePath++;
@@ -31,23 +30,20 @@ int shouldCompressFileType(char *filePath, char *extensions[])
 	{
 		extension--;
 	}
-	printf("Extension is: %s\n", extension);
 	
 	int shouldCompress = 0;
 	
 	// print passed in extensions
-	char **j = extensions;
-	while(*j)
+	int index;
+	for(index = 0; index < extCount; index++)
 	{
-		printf("%s", *j);
-		if(strcmp(*j, extension))
+		if(strcmp(extensions[index], extension) == 0)
 		{
 			// matched the extension, compress
 			shouldCompress = 1;
 		}
 		else
 			shouldCompress = 0;
-		j++;
 	}
 	
 	/* NOTE: Use this for hard coding the file extensions to compress

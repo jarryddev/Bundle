@@ -30,7 +30,6 @@ static unsigned int fileCountForHeader=0;
 /////////////////////////////////////////////////////////////
 char *filename(char *path){
   char *t;
-  printf("length: %ld\n", strlen(path));
   while ( (t=strchr(path, '/')) != NULL){
     path=++t;
   }
@@ -174,7 +173,7 @@ void printData(FILE *someFile, char *text)
   fprintf(someFile,"%s\n", text); /*writes*/
 }
 
-static int packageSourceFolder(char **source, char *desintation, char *extensions[])
+static int packageSourceFolder(char **source, char *desintation, char *extensions[], int extCount)
 {
   FTS *ftsp;
   FTSENT *p, *chp;
@@ -242,10 +241,12 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
 
   while ((p = fts_read(ftsp)) != NULL)
     {
+			int tempFileExists = 0; //used to flag temp file for deletion
       switch (p->fts_info)
         {
         case FTS_D:
           printf(">dir: %s\n\n", p->fts_path);
+					printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
           printData(pakFile, p->fts_path);
           break;
         case FTS_F:
@@ -260,13 +261,14 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
 
 							FILE *tempFile;
 							
-							if(shouldCompressFileType(p->fts_path, extensions) == 1)
+							if(shouldCompressFileType(p->fts_path, extensions, extCount) == 1)
 							{
 								/* 	compress the fts_path file and write
 	               		the compressed data one to pak file
 	              */
 								compress_one_file(p->fts_path, "temp.txt");
 	 							tempFile = fopen("temp.txt","rb");
+								tempFileExists = 1;
 							}
               else
 							{
@@ -297,8 +299,9 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
               if(tempFileName)
                 {
                   printf("\t>The offset for %s is %d\n", tempFileName, (unsigned int)offset);
-                  printf("\t>The compressed size of %s is %lu\n", basename(tempFileName), size);
+                  printf("\t>The written size of %s is %lu\n", basename(tempFileName), size);
                   printf("\t>%s was added to the bundle\n\n", basename(tempFileName));
+									printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
                   free(tempFileName);
                 }
 
@@ -314,8 +317,11 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
               fclose(tempFile); // done!
 
 							//delete the temporary file
-              if (remove("temp.txt") == -1)
-                perror("Error in deleting temp file");
+							if(tempFileExists == 1)
+							{
+								if (remove("temp.txt") == -1)
+	                perror("Error in deleting temp file");
+							}
               break;
             }
         default:
@@ -337,11 +343,12 @@ int main(int argc, char *const argv[])
 			{
 				printf("No extenstions to compress\n");
 			}
-			char *extensions[7];
 			//get number of compression extension types passed in
-			int argCount = argc - 3;
+			int extCount = argc - 3;
 			int index;
-			for(index = 0; index < argCount; index++)
+			char *extensions[7];
+			*extensions = malloc(extCount * sizeof(char *));
+			for(index = 0; index < extCount; index++)
 			{
 				extensions[index] = argv[3 + index];
 			}
@@ -359,7 +366,7 @@ int main(int argc, char *const argv[])
       char *destination = malloc(strlen(argv[2]));
       strcpy(destination, argv[2]);
 
-      if((rc = packageSourceFolder(sourcePath, destination, extensions) != 0))
+      if((rc = packageSourceFolder(sourcePath, destination, extensions, extCount) != 0))
         {
           printf("Failed to create Bundle\n");
           rc = 1;
@@ -371,6 +378,7 @@ int main(int argc, char *const argv[])
       free(sourcePath[0]);
       free(sourcePath);
       free(destination);
+			//free(extensions);
     }
   else
     {
