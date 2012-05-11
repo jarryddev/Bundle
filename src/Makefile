@@ -17,7 +17,7 @@ PROG= BundleHandler
 LIB_DIR=../lib
 CC_FLAGS=-L../lib
 LINK_FLAGS= -lz 
-
+GLOBAL_BIN_DIR=/usr/bin
 
 git_push:
 	git push git@github.com:jarryddev/Bundle.git
@@ -34,11 +34,16 @@ $(HASH_OBJ): header_lib
 $(MMAP_OBJ): 
 	$(CC) $(CC_FLAGS) -c $(MMAP_SRC)
 
-install: $(OBJ)
+bundle: $(OBJ)
 	$(CC) $(OBJ) $(LINK_FLAGS) -o $(BIN_DIR)/bundle
 
-lib:	$(OBJ) header_lib
-	ar cr $(LIB_DIR)/libbundler.a bundler.o  
+bundle_install: 
+	cp $(BIN_DIR)/bundle $(GLOBAL_BIN_DIR)/bundle
+	make bundle_lib
+	cp $(LIB_DIR)/libheader.a /usr/lib/libheader.a
+
+bundle_lib:	$(OBJ) header_lib
+	ar cr $(LIB_DIR)/libbundle.a bundle.o  
 
 header: header_lib
 	$(CC) $(LIB_DIR)/libheader.a header_main.c -o $(BIN_DIR)/header_main -lheader $(CC_FLAGS)
@@ -54,11 +59,5 @@ hash_lib: $(HASH_OBJ)
 
 integrate: header_lib hash_lib mmap_lib
 	$(CC) -o $(BIN_DIR)/integration -L$(LIB_DIR) -lhash -lheader -lbundlemmap integration.c
-
-run: 	clean header
-	./$(PROG)_main
-	@echo "Printing file data:" && echo "" 
-	hexdump file.pak
-
 clean:
 	-rm -f *.o *.a bundle $(LIB_DIR)/*.a *.gch *~

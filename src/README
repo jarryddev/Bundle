@@ -1,0 +1,7 @@
+
+
+To install bundle:
+   $ make install
+
+To compile an integrated code:
+   $ make integrate
