@@ -61,6 +61,7 @@ int hash_init(char *filename){
   }
 
   free(offsets);
+  offsets=NULL;
   fclose(fh);
 
   printf(" --- Hash created --- \n");
@@ -122,13 +123,8 @@ void hash_read(){
 void hash_destroy(){
   khiter_t iter;
 
-  for (iter = kh_begin(header_hash); iter != kh_end(header_hash); iter++){
-    if (kh_exist(header_hash, iter)) {
-      free(kh_value(header_hash, iter));
-    }
-  }
-
-  kh_destroy(32, header_hash);
+  
+      kh_destroy(32, header_hash);
 }
 
 

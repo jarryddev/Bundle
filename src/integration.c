@@ -27,13 +27,13 @@ int bundle_start(char *pakFile, struct mappedData *mData){
 
 }
 
-offset_p bundle_getIndexDataFor(char *fileName)
+offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 {
   offset_p offs;
 
   //  get fileName offset and print it
   if ((offs = get_offset(fileName)) == NULL) return NULL;
-  
+  offs->offset_start+=mmap_address;
   return offs;
 }
 
@@ -65,7 +65,7 @@ int main(int argc, char **argv){
 
   bundle_start(filename, mData);
   
-  if ((offs=bundle_getIndexDataFor(file_to_locate)) == NULL){
+  if ((offs=bundle_getIndexDataFor(file_to_locate, mData->mappedAddress)) == NULL){
     printf("%s not found\n", file_to_locate);
   }
   
@@ -74,6 +74,8 @@ int main(int argc, char **argv){
 
   free(mData);
   free(offs);
+
+  mData=offs=NULL;
   /* Run Game Code From here */
   
   /* When done stop Bundle
