@@ -348,6 +348,7 @@ int main(int argc, char *const argv[])
 			int index;
 			char *extensions[7];
 			*extensions = malloc(extCount * sizeof(char *));
+			void *extensionsStart = *extensions;
 			for(index = 0; index < extCount; index++)
 			{
 				extensions[index] = argv[3 + index];
@@ -378,7 +379,7 @@ int main(int argc, char *const argv[])
       free(sourcePath[0]);
       free(sourcePath);
       free(destination);
-			//free(extensions);
+			free(extensionsStart);
     }
   else
     {
