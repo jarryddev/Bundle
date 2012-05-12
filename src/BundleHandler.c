@@ -54,8 +54,6 @@ either expressed or implied, of the FreeBSD Project.
 const char ext_to_ignore[] = ".DS_Store .exe";
 static unsigned int fileCountForHeader=0;
 
-
-
 /////////////////////////////////////////////////////////////
 // Returns a pointer to the filename in a fullpath passed.
 /////////////////////////////////////////////////////////////
@@ -112,10 +110,15 @@ static int countFiles(char **source)
 unsigned long file_size(char *filename)
 {
   FILE *pFile = fopen(filename, "rb");
-  fseek (pFile, 0, SEEK_END);
-  unsigned long size = ftell(pFile);
-  fclose (pFile);
-  return size;
+	if(pFile != NULL)
+	{
+		fseek (pFile, 0, SEEK_END);
+	  unsigned long size = ftell(pFile);
+	  fclose (pFile);
+	  return size;
+	}
+	// couldnt open file
+	return 0;
 }
 
 int decompress_one_file(char *infilename, char *outfilename)
@@ -344,7 +347,6 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
                   fwrite(&byte, sizeof(char), 1, pakFile);
                 }
 
-
               fclose(tempFile); // done!
 
 							//delete the temporary file
@@ -411,6 +413,7 @@ int main(int argc, char *const argv[])
       free(sourcePath);
       free(destination);
 			free(extensionsStart);
+			extensions = NULL;
     }
   else
     {

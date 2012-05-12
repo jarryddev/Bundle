@@ -97,6 +97,7 @@ int shouldCompressFileType(char *filePath, char *extensions[], int extCount)
 	*/
 	
 	free(tmpExt);
+	extension = NULL;
 	return shouldCompress;
 }
 
