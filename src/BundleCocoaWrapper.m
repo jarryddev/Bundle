@@ -34,7 +34,7 @@ either expressed or implied, of the FreeBSD Project.
 #import integration.c
 
 // this will 
-id bundle_useFile:(NSString *) fileName forObject:(id) object
+void bundle_useFile:(NSString *) fileName forObject:(id) object
 {
 	/* convert string to char *
 	 * pass the char * to void bundle_getIndexDataFor(char *fileName)
@@ -45,6 +45,5 @@ id bundle_useFile:(NSString *) fileName forObject:(id) object
 	 * 
 	 * example usage: UIImage* anImage = [UIImage imageWithData: object];
 	 * will decide to add the return or what to complete this method with.
-	 * return object
 	 */
 }
