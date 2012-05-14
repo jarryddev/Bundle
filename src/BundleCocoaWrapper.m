@@ -33,15 +33,31 @@ either expressed or implied, of the FreeBSD Project.
 
 #import integration.c
 
-void bundle_useFile:(NSString *) fileName forObject:(id) object
+(NSData *) bundle_useFile:(NSString *) fileName
 {
-	/* convert string to char *
-	 * pass the char * to void bundle_getIndexDataFor(char *fileName)
-	 * use the index data to pass to 
-	 * object = [NSData dataWithBytesNoCopy: pointerToMMappedData 
-	 *                  						length: dataLength  
-	 *                      					freeWhenDone: NO];
-	 *
-	 * example usage: UIImage* anImage = [UIImage imageWithData: object];
-	 */
+	// convert NSString to char *
+	const char *file = [fileName UTF8String];
+	
+	// get index data for file
+	offset_p offset = bundle_getIndexDataFor(char *fileName);
+	
+	// create data from file in mapped segment
+	NSData *data;
+	data = [NSData dataWithBytesNoCopy:offset->offset_start 
+              									length:offset->size 
+                 					freeWhenDone:NO];
+	
+	return data;
+}
+
+// returns 1 for compressed, 0 for uncompressed
+(NSNumber) isFileCompressed:(NSString *) fileName
+{
+	// convert NSString to char *
+	const char *file = [fileName UTF8String];
+	
+	// get index data for file
+	offset_p offset = bundle_getIndexDataFor(char *fileName);
+	
+	return [NSNumber numberWithChar:offset->compressed];
 }
