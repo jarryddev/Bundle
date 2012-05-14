@@ -33,7 +33,6 @@ either expressed or implied, of the FreeBSD Project.
 
 #import integration.c
 
-// this will 
 void bundle_useFile:(NSString *) fileName forObject:(id) object
 {
 	/* convert string to char *
@@ -42,8 +41,7 @@ void bundle_useFile:(NSString *) fileName forObject:(id) object
 	 * object = [NSData dataWithBytesNoCopy: pointerToMMappedData 
 	 *                  						length: dataLength  
 	 *                      					freeWhenDone: NO];
-	 * 
+	 *
 	 * example usage: UIImage* anImage = [UIImage imageWithData: object];
-	 * will decide to add the return or what to complete this method with.
 	 */
 }
