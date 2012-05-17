@@ -75,9 +75,6 @@ size_t size;
 
 // this maps the pak file
 int mapPakFile(const char *fileToOpen, long startOffset, struct mappedData *mData){
-	unsigned char *temp;
-  	unsigned int store;
-  	size_t i;
 
   	FILE *file = fopen(fileToOpen, "rb");
 		if(file != NULL)
@@ -96,7 +93,7 @@ int mapPakFile(const char *fileToOpen, long startOffset, struct mappedData *mDat
 	    	{
 	      	printf("Failed to map file to virtual memory.\n");
 	      	fclose(file);
-	      	return NULL;
+	      	return 1;
 	    	}
 	  	printf("Successfully mapped file to virtual memory.\n");
 	  	printf("Starting Mapped Address is: %X \n", (char *) mData->mappedAddress);
@@ -118,14 +115,16 @@ int mapPakFile(const char *fileToOpen, long startOffset, struct mappedData *mDat
   	
 }
 
-void unMapPakFile (void *mappedAddress, size_t fileSize){
+int unMapPakFile (void *mappedAddress, size_t fileSize){
   if(munmap(mappedAddress, fileSize) != 0)
     {
       printf("Failed to unmap file.\n");
+        return -1;
     }
   else
     {
       printf("Successfully unmapped file with size %lu.\n", (unsigned long)fileSize);
+        return 0;
     }
 }
 

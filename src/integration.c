@@ -70,7 +70,7 @@ offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 
 int bundle_stop(struct mappedData *mData){
   hash_destroy();
-  unMapPakFile (mData->mappedAddress, mData->fileSize);
+  return(unMapPakFile (mData->mappedAddress, mData->fileSize));
 }
 
 // This will be done within an objective-C file

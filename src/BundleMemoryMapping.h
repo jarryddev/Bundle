@@ -44,6 +44,6 @@ struct mappedData {
 };
 
 int mapPakFile (const char *fileToOpen, long startOffset, struct mappedData *mData);
-void unMapPakFile (void *mappedAddress, size_t fileSize);
+int unMapPakFile (void *mappedAddress, size_t fileSize);
 
 #endif

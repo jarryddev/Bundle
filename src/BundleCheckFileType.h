@@ -31,6 +31,7 @@ either expressed or implied, of the FreeBSD Project.
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #ifndef Bundle_CheckFileType_h
 #define Bundle_CheckFileType_h
