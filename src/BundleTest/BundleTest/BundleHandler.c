@@ -413,7 +413,7 @@ int main(int argc, char *const argv[])
       free(sourcePath);
       free(destination);
 			free(extensionsStart);
-			extensions = NULL;
+			*extensions = NULL;
     }
   else
     {
