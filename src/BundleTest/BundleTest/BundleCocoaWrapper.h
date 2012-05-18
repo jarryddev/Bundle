@@ -33,7 +33,7 @@ either expressed or implied, of the FreeBSD Project.
 
 #import "integration.h"
 
-@interface Bundle_CocoaWrapper
+@interface Bundle_CocoaWrapper: NSObject
 
 - (NSData *) bundle_useFile:(NSString *) fileName withMappedData:(struct mappedData *)mData;
 - (NSNumber *) isFileCompressed:(NSString *) fileName withMappedData:(struct mappedData *)mData;
