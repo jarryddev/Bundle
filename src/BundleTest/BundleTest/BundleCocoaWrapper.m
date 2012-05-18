@@ -71,4 +71,6 @@ either expressed or implied, of the FreeBSD Project.
 	return [NSNumber numberWithChar:offset->compressed];
 }
 
+
+
 @end
