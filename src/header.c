@@ -171,6 +171,8 @@ void header_write_offset(FILE *fh, offset_p offp, unsigned int index){
   memcpy(buff + sizeof(khint_t), (void *)&offp->offset_start, sizeof(long int));
   memcpy(buff, (void *)&offp->hash, sizeof(khint_t));
 
+  printf("hash  : %p\n", offp->hash);
+
   // jump to end of header  
   fseek(fh, sizeof(unsigned int) + (index*HEADER_OFFSET_SIZE), SEEK_SET); /* todo: err check */
 
@@ -189,7 +191,7 @@ void small_to_big_endian_int(char **bin, unsigned int size){
     temp[size-i] = (*bin)[i];
   }
   memcpy(bin, &temp, sizeof(char) * size);
-  printf(" bla: %p\n", temp);
+
   free(temp);
   temp= NULL;
 }
@@ -291,14 +293,10 @@ offset_p* header_get_offsets(FILE *fh){
     memcpy(&(*offsets[i]).size, buff, sizeof(size_t));
     buff+=sizeof(size_t);
     memcpy(&(*offsets[i]).compressed, buff, sizeof(char));
-    
-    //    printf("hash read: %p\n", t_offsets[i].hash);
-    //    printf("offset start read: %p\n", t_offsets[i].offset_start);
-    //    printf("offset size read: %p\n", t_offsets[i].size);
+    buff+=sizeof(char);
   }
 
-
-  buff-= n_files*(sizeof(size_t)+sizeof(long int)+sizeof(khint_t));
+  buff-= n_files*(sizeof(size_t)+sizeof(long int)+sizeof(khint_t)+sizeof(char));
   free(buff);
   buff=NULL;
 

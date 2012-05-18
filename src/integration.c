@@ -42,7 +42,7 @@ either expressed or implied, of the FreeBSD Project.
 int bundle_start(char *pakFile, struct mappedData *mData){
   int ret;
 
-  // hash file
+    // hash file
   if ((ret=hash_init(pakFile)) != 1){
     printf("Filed hashing %s, quitting...\n", pakFile);
     return -1;
@@ -64,7 +64,7 @@ offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 
   //  get fileName offset and print it
   if ((offs = get_offset(fileName)) == NULL) return NULL;
-  offs->offset_start+=mmap_address;
+  //    offs->offset_start+=mmap_address;
   return offs;
 }
 
@@ -95,18 +95,22 @@ int main(int argc, char **argv){
   long int offset;
 
   bundle_start(filename, mData);
-  
-  if ((offs=bundle_getIndexDataFor(file_to_locate, mData->mappedAddress)) == NULL){
+
+  if ((offs=bundle_getIndexDataFor(file_to_locate, (long int)mData->mappedAddress)) == NULL){
     printf("%s not found\n", file_to_locate);
+    exit(1);
   }
-  
+
   printf("%s Found:\n", file_to_locate);
   print_offset(offs);
 
+  char *retData= getDataForOffsets(mData->mappedAddress, 0, offs->size);
+
+  //  free(retData);
   free(mData);
   free(offs);
 
-  mData=offs=NULL;
+  //  mData=offs=NULL;
   /* Run Game Code From here */
   
   /* When done stop Bundle

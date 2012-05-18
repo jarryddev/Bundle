@@ -117,6 +117,8 @@ offset_p get_offset(char *filename){
 
   if (!kh_size(header_hash)) return NULL;
 
+  printf("asking for hash %p\n", __ac_X31_hash_string(filename));
+
   k=kh_get(32, header_hash, __ac_X31_hash_string(filename)); // get key
 
   if (k == kh_end(header_hash)) return NULL; // key does not exist

@@ -324,6 +324,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BundleTest/BundleTest.entitlements;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BundleTest/BundleTest-Prefix.pch";
 				INFOPLIST_FILE = "BundleTest/BundleTest-Info.plist";
@@ -336,6 +338,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BundleTest/BundleTest.entitlements;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BundleTest/BundleTest-Prefix.pch";
 				INFOPLIST_FILE = "BundleTest/BundleTest-Info.plist";
