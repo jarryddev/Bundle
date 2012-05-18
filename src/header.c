@@ -298,7 +298,7 @@ offset_p* header_get_offsets(FILE *fh){
   }
 
 
-  buff-= s*n_files;
+  buff-= n_files*(sizeof(size_t)+sizeof(long int)+sizeof(khint_t));
   free(buff);
   buff=NULL;
 
