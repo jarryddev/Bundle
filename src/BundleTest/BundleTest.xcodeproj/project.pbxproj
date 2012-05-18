@@ -17,23 +17,13 @@
 		048349FA1565494700647D64 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 048349F91565494700647D64 /* ViewController.m */; };
 		048349FD1565494700647D64 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 048349FB1565494700647D64 /* ViewController.xib */; };
 		04834A17156560F100647D64 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04834A16156560F100647D64 /* libz.1.2.5.dylib */; };
-		04834A181565663900647D64 /* BundleCheckFileType.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A041565606400647D64 /* BundleCheckFileType.c */; };
-		04834A191565663900647D64 /* BundleCheckFileType.h in Sources */ = {isa = PBXBuildFile; fileRef = 04834A051565606400647D64 /* BundleCheckFileType.h */; };
 		04834A1A1565663900647D64 /* BundleCocoaWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 04834A061565606400647D64 /* BundleCocoaWrapper.m */; };
-		04834A1B1565663900647D64 /* BundleHandler.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A071565606400647D64 /* BundleHandler.c */; };
-		04834A1C1565663900647D64 /* BundleHandler.h in Sources */ = {isa = PBXBuildFile; fileRef = 04834A081565606400647D64 /* BundleHandler.h */; };
-		04834A1D1565663900647D64 /* BundleMemoryMapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A091565606400647D64 /* BundleMemoryMapping.c */; };
-		04834A1E1565663900647D64 /* BundleMemoryMapping.h in Sources */ = {isa = PBXBuildFile; fileRef = 04834A0A1565606400647D64 /* BundleMemoryMapping.h */; };
-		04834A1F1565663900647D64 /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A0B1565606400647D64 /* hash.c */; };
-		04834A201565663900647D64 /* hash.h in Sources */ = {isa = PBXBuildFile; fileRef = 04834A0C1565606400647D64 /* hash.h */; };
-		04834A221565663900647D64 /* header_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A0E1565606400647D64 /* header_main.c */; };
-		04834A231565663900647D64 /* header.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A0F1565606400647D64 /* header.c */; };
-		04834A241565663900647D64 /* header.h in Sources */ = {isa = PBXBuildFile; fileRef = 04834A101565606400647D64 /* header.h */; };
-		04834A251565663900647D64 /* integration.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A111565606400647D64 /* integration.c */; };
-		04834A261565663900647D64 /* khash.h in Sources */ = {isa = PBXBuildFile; fileRef = 04834A121565606400647D64 /* khash.h */; };
-		04834A271565663900647D64 /* stack_test.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A131565606400647D64 /* stack_test.c */; };
-		04834A281565663900647D64 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A141565606400647D64 /* test.c */; };
-		04834A291565663900647D64 /* types.h in Sources */ = {isa = PBXBuildFile; fileRef = 04834A151565606400647D64 /* types.h */; };
+		04AB50801565DBB400552954 /* BundleCheckFileType.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A041565606400647D64 /* BundleCheckFileType.c */; };
+		04AB50811565DBB400552954 /* BundleHandler.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A071565606400647D64 /* BundleHandler.c */; };
+		04AB50821565DBB400552954 /* BundleMemoryMapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A091565606400647D64 /* BundleMemoryMapping.c */; };
+		04AB50831565DBB400552954 /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A0B1565606400647D64 /* hash.c */; };
+		04AB50841565DBB400552954 /* header.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A0F1565606400647D64 /* header.c */; };
+		04AB50851565DBB400552954 /* integration.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A111565606400647D64 /* integration.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,15 +51,13 @@
 		04834A0A1565606400647D64 /* BundleMemoryMapping.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BundleMemoryMapping.h; sourceTree = "<group>"; };
 		04834A0B1565606400647D64 /* hash.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hash.c; sourceTree = "<group>"; };
 		04834A0C1565606400647D64 /* hash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hash.h; sourceTree = "<group>"; };
-		04834A0E1565606400647D64 /* header_main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = header_main.c; sourceTree = "<group>"; };
 		04834A0F1565606400647D64 /* header.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = header.c; sourceTree = "<group>"; };
 		04834A101565606400647D64 /* header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = "<group>"; };
 		04834A111565606400647D64 /* integration.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = integration.c; sourceTree = "<group>"; };
 		04834A121565606400647D64 /* khash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = khash.h; sourceTree = "<group>"; };
-		04834A131565606400647D64 /* stack_test.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = stack_test.c; sourceTree = "<group>"; };
-		04834A141565606400647D64 /* test.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test.c; sourceTree = "<group>"; };
 		04834A151565606400647D64 /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		04834A16156560F100647D64 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
+		04AB50861565DD9300552954 /* integration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = integration.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,13 +142,11 @@
 				04834A0A1565606400647D64 /* BundleMemoryMapping.h */,
 				04834A0B1565606400647D64 /* hash.c */,
 				04834A0C1565606400647D64 /* hash.h */,
-				04834A0E1565606400647D64 /* header_main.c */,
 				04834A0F1565606400647D64 /* header.c */,
 				04834A101565606400647D64 /* header.h */,
+				04AB50861565DD9300552954 /* integration.h */,
 				04834A111565606400647D64 /* integration.c */,
 				04834A121565606400647D64 /* khash.h */,
-				04834A131565606400647D64 /* stack_test.c */,
-				04834A141565606400647D64 /* test.c */,
 				04834A151565606400647D64 /* types.h */,
 			);
 			name = Bundle;
@@ -230,23 +216,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04834A181565663900647D64 /* BundleCheckFileType.c in Sources */,
-				04834A191565663900647D64 /* BundleCheckFileType.h in Sources */,
+				04AB50801565DBB400552954 /* BundleCheckFileType.c in Sources */,
+				04AB50811565DBB400552954 /* BundleHandler.c in Sources */,
+				04AB50821565DBB400552954 /* BundleMemoryMapping.c in Sources */,
+				04AB50831565DBB400552954 /* hash.c in Sources */,
+				04AB50841565DBB400552954 /* header.c in Sources */,
+				04AB50851565DBB400552954 /* integration.c in Sources */,
 				04834A1A1565663900647D64 /* BundleCocoaWrapper.m in Sources */,
-				04834A1B1565663900647D64 /* BundleHandler.c in Sources */,
-				04834A1C1565663900647D64 /* BundleHandler.h in Sources */,
-				04834A1D1565663900647D64 /* BundleMemoryMapping.c in Sources */,
-				04834A1E1565663900647D64 /* BundleMemoryMapping.h in Sources */,
-				04834A1F1565663900647D64 /* hash.c in Sources */,
-				04834A201565663900647D64 /* hash.h in Sources */,
-				04834A221565663900647D64 /* header_main.c in Sources */,
-				04834A231565663900647D64 /* header.c in Sources */,
-				04834A241565663900647D64 /* header.h in Sources */,
-				04834A251565663900647D64 /* integration.c in Sources */,
-				04834A261565663900647D64 /* khash.h in Sources */,
-				04834A271565663900647D64 /* stack_test.c in Sources */,
-				04834A281565663900647D64 /* test.c in Sources */,
-				04834A291565663900647D64 /* types.h in Sources */,
 				048349F11565494700647D64 /* main.m in Sources */,
 				048349F51565494700647D64 /* AppDelegate.m in Sources */,
 				048349FA1565494700647D64 /* ViewController.m in Sources */,

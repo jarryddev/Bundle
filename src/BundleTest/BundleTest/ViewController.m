@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "integration.c"
+#import "BundleCocoaWrapper.h"
 
 
 @interface ViewController ()

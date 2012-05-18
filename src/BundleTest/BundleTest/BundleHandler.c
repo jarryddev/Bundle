@@ -366,64 +366,64 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
   return 0;
 }
 
-int main(int argc, char *const argv[])
-{
-  int rc;
-
-  if(argc >= 3)
-    {
-			if(argc == 3)
-			{
-				printf("No extenstions to compress\n");
-			}
-			//get number of compression extension types passed in
-			int extCount = argc - 3;
-			int index;
-			char *extensions[7];
-			*extensions = malloc(extCount * sizeof(char *));
-			void *extensionsStart = *extensions;
-			for(index = 0; index < extCount; index++)
-			{
-				extensions[index] = argv[3 + index];
-			}
-      
-			printf("\n"); // this adds a space for readability in terminal
-      
-			char **sourcePath = malloc(2 * (sizeof *sourcePath));
-      sourcePath[0] = malloc(strlen(argv[1]) + 1);
-      if(!sourcePath[0])
-        printf("Could not start package process\n");
-      strcpy(sourcePath[0], argv[1]);
-      sourcePath[1] = NULL;
-      countFiles(sourcePath);
-
-      char *destination = malloc(strlen(argv[2]));
-      strcpy(destination, argv[2]);
-
-      if((rc = packageSourceFolder(sourcePath, destination, extensions, extCount) != 0))
-        {
-          printf("Failed to create Bundle\n");
-          rc = 1;
-        }
-      else
-        {
-          printf("Bundle created: %s\n", destination);
-        }
-      free(sourcePath[0]);
-      free(sourcePath);
-      free(destination);
-			free(extensionsStart);
-			*extensions = NULL;
-    }
-  else
-    {
-      printf("Usage: BundleHandler <source_path> <destination path>\n");
-    }
-
-  printf("\n"); // again, this improves readability. imo :)
-
-
-
-
-  return rc;
-}
+//int main(int argc, char *const argv[])
+//{
+//  int rc;
+//
+//  if(argc >= 3)
+//    {
+//			if(argc == 3)
+//			{
+//				printf("No extenstions to compress\n");
+//			}
+//			//get number of compression extension types passed in
+//			int extCount = argc - 3;
+//			int index;
+//			char *extensions[7];
+//			*extensions = malloc(extCount * sizeof(char *));
+//			void *extensionsStart = *extensions;
+//			for(index = 0; index < extCount; index++)
+//			{
+//				extensions[index] = argv[3 + index];
+//			}
+//      
+//			printf("\n"); // this adds a space for readability in terminal
+//      
+//			char **sourcePath = malloc(2 * (sizeof *sourcePath));
+//      sourcePath[0] = malloc(strlen(argv[1]) + 1);
+//      if(!sourcePath[0])
+//        printf("Could not start package process\n");
+//      strcpy(sourcePath[0], argv[1]);
+//      sourcePath[1] = NULL;
+//      countFiles(sourcePath);
+//
+//      char *destination = malloc(strlen(argv[2]));
+//      strcpy(destination, argv[2]);
+//
+//      if((rc = packageSourceFolder(sourcePath, destination, extensions, extCount) != 0))
+//        {
+//          printf("Failed to create Bundle\n");
+//          rc = 1;
+//        }
+//      else
+//        {
+//          printf("Bundle created: %s\n", destination);
+//        }
+//      free(sourcePath[0]);
+//      free(sourcePath);
+//      free(destination);
+//			free(extensionsStart);
+//			*extensions = NULL;
+//    }
+//  else
+//    {
+//      printf("Usage: BundleHandler <source_path> <destination path>\n");
+//    }
+//
+//  printf("\n"); // again, this improves readability. imo :)
+//
+//
+//
+//
+//  return rc;
+//}
