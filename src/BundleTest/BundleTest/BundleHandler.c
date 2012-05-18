@@ -49,7 +49,7 @@ either expressed or implied, of the FreeBSD Project.
 #include "zlib.h"
 #include "header.h"
 #include "BundleHandler.h"
-#include "BundleCheckFileType.c"
+#include "BundleCheckFileType.h"
 
 const char ext_to_ignore[] = ".DS_Store .exe";
 static unsigned int fileCountForHeader=0;

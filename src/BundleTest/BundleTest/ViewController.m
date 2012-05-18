@@ -16,22 +16,86 @@
 
 @implementation ViewController
 
+struct mappedData *mData;
+NSData *data;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    
-    NSData *data;
     
     // setup bundle
-    struct mappedData *mData;
     mData = malloc(sizeof(struct mappedData));
+    
+    
+    
+}
+- (IBAction)loadTwenty:(id)sender
+{
     NSString *filename = @"test1.pak";
-   
-    // start bundle
     bundle_start([filename UTF8String], mData);
+}
+
+- (IBAction)loadForty:(id)sender
+{
+    NSString *filename = @"test1.pak";
+    bundle_start([filename UTF8String], mData);
+}
+
+- (IBAction)loadEighty:(id)sender
+{
+    NSString *filename = @"test1.pak";
+    bundle_start([filename UTF8String], mData);
+}
+
+- (IBAction)loadOneSixty:(id)sender
+{
+    NSString *filename = @"test1.pak";
+    bundle_start([filename UTF8String], mData);
+}
+
+- (IBAction)twentyMbSeq:(id)sender
+{
     
+}
+
+- (IBAction)twentyMbRand:(id)sender
+{
     
+}
+
+- (IBAction)fortyMbSeq:(id)sender
+{
+    
+}
+
+- (IBAction)fortyMbRand:(id)sender
+{
+    
+}
+
+- (IBAction)eightyMbSeq:(id)sender
+{
+    
+}
+
+- (IBAction)eightyMbRand:(id)sender
+{
+    
+}
+
+- (IBAction)oneSixtyMbSeq:(id)sender
+{
+    
+}
+
+- (IBAction)oneSixtyMbRand:(id)sender
+{
+    
+}
+
+- (IBAction)stop:(id)sender
+{
+    bundle_stop(mData);
 }
 
 - (void)viewDidUnload
