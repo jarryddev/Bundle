@@ -171,14 +171,13 @@ void header_write_offset(FILE *fh, offset_p offp, unsigned int index){
     memcpy(buff + sizeof(khint_t), (void *)&offp->offset_start, sizeof(long int));
     memcpy(buff, (void *)&offp->hash, sizeof(khint_t));
     
-    printf("hash  : %p\n", offp->hash);
-    
     // jump to end of header  
     fseek(fh, sizeof(unsigned int) + (index*HEADER_OFFSET_SIZE), SEEK_SET); /* todo: err check */
     
     fwrite(buff, HEADER_OFFSET_SIZE, 1, fh); // write offset
     
     // free buffer
+    
     free(buff);
     buff= NULL;
 }
