@@ -51,7 +51,6 @@
 #include "BundleHandler.h"
 #include "BundleCheckFileType.c"
 
-const char ext_to_ignore[] = ".DS_Store .exe";
 static unsigned int fileCountForHeader=0;
 
 /////////////////////////////////////////////////////////////
@@ -284,9 +283,11 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
                 printData(pakFile, p->fts_path);
                 break;
             case FTS_F:
-                if(strstr(p->fts_path, ext_to_ignore) != NULL) //ignore DS_Store and exe
+                if((strstr(p->fts_path, ".DS_Store") != NULL)//ignore DS_Store and exe
+ 										|| (strstr(p->fts_path, ".exe") != NULL))
                 {
                     printf("Found file to ignore: %s\n", p->fts_path);
+										printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
                 }
                 else
                 {
@@ -412,13 +413,8 @@ int main(int argc, char *const argv[])
         free(sourcePath[0]);
         free(sourcePath);
         free(destination);
-        <<<<<<< HEAD
         free(extensionsStart);
         *extensions =    NULL;
-        =======
-        free(extensionsStart);
-        *extensions = NULL;
-        >>>>>>> 1bbddd44ca8673578f5e41e6d899ce44ebf7718c
     }
     else
     {

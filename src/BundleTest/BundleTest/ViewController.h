@@ -8,7 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UITextFieldDelegate>
+{
+    IBOutlet UIImageView *imageView;
+    IBOutlet UITextField *textField;
+}
+
+
+@property(nonatomic, retain) UIImageView *imageView;
+@property(nonatomic, retain) UITextField *textField;
+
+- (IBAction)getFile:(id)sender;
 
 - (IBAction)loadTwenty:(id)sender;
 - (IBAction)loadForty:(id)sender;

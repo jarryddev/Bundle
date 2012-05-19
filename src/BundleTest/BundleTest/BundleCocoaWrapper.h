@@ -35,6 +35,7 @@ either expressed or implied, of the FreeBSD Project.
 
 @interface Bundle_CocoaWrapper: NSObject
 
+- (void) bundleStart:(NSString *)filename withMData:(struct mappedData *)mData;
 - (NSData *) bundle_useFile:(NSString *) fileName withMappedData:(struct mappedData *)mData;
 - (NSNumber *) isFileCompressed:(NSString *) fileName withMappedData:(struct mappedData *)mData;
 

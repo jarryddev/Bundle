@@ -39,6 +39,14 @@ either expressed or implied, of the FreeBSD Project.
 
 @implementation Bundle_CocoaWrapper
 
+- (void) bundleStart:(NSString *)filename withMData:(struct mappedData *)mData
+{
+    
+//    NSString *docsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+//    NSString *filePath = [docsPath stringByAppendingPathComponent:filename];
+    bundle_start([filename UTF8String], mData);
+}
+
 - (NSData *) bundle_useFile:(NSString *) fileName withMappedData:(struct mappedData *)mData
 {
 	// convert NSString to char *

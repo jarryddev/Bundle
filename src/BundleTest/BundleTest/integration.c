@@ -44,7 +44,7 @@ int bundle_start(char *pakFile, struct mappedData *mData){
 
   // hash file
   if ((ret=hash_init(pakFile)) != 1){
-    printf("Filed hashing %s, quitting...\n", pakFile);
+    printf("Failed hashing %s, quitting...\n", pakFile);
     return -1;
   }
 

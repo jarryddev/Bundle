@@ -16,12 +16,26 @@
 
 @implementation ViewController
 
+@synthesize imageView;
+@synthesize textField;
+
 struct mappedData *mData;
 Bundle_CocoaWrapper *wrapper;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Create file manager
+    NSError *error;
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    
+    // Point to Document directory
+    NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    
+    // Write out the contents of home directory to console
+    NSLog(@"Documents directory: %@", [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:&error]);
+
     
     // setup bundle
     mData = malloc(sizeof(struct mappedData));
@@ -30,10 +44,17 @@ Bundle_CocoaWrapper *wrapper;
     
 }
 
+- (IBAction)getFile:(id)sender
+{
+    [textField resignFirstResponder];
+    NSData *data = [wrapper bundle_useFile:textField.text withMappedData:mData];
+    imageView.image = [UIImage imageWithData:data];
+}
+
 - (IBAction)loadTwenty:(id)sender
 {
-    NSString *filename = @"test20.pak";
-    bundle_start([filename UTF8String], mData);
+    NSString *filename = @"testImages.pak";
+    [wrapper bundleStart:filename withMData:mData];
 }
 
 - (IBAction)loadForty:(id)sender
@@ -122,7 +143,8 @@ Bundle_CocoaWrapper *wrapper;
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
+    [imageView release];
+    [textField release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
