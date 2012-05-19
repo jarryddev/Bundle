@@ -259,6 +259,8 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
         return 0;
     }
     
+    size_t header_size = fileCountForHeader* HEADER_OFFSET_SIZE + sizeof(int);
+
     if ((ftsp = fts_open(source, fts_options, NULL)) == NULL) {
         warn("fts_open");
         return -1;
@@ -310,23 +312,25 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
                         tempFile = fopen(p->fts_path,"rb");
                     }
                     char byte;
-                    off_t offset = ftell(pakFile);
-                    
+		    
+		    fseek(pakFile, 0L, SEEK_END);
+		    off_t offset = ftell(pakFile);
+
                     //get the size of the file
                     fseek(tempFile, 0L, SEEK_END);
-                    long size = ftell(tempFile);
-                    fseek(tempFile, 0L, SEEK_SET);
-                    
+		    long size = ftell(tempFile);
+		    fseek(tempFile, 0L, SEEK_SET);
+		    offset= offset-HEADER_OFFSET_SIZE;
                     char *fileName = p->fts_path;
                     char *tempFileName = strdup(fileName);
                     
                     //update header
                     //offset_p off= malloc(HEADER_OFFSET_SIZE);
-                    header_offset off;
                     
-                    off.hash = __ac_X31_hash_string( filename(fileName) );
-                    off.size= size;
-                    off.offset_start= offset - HEADER_OFFSET_SIZE;
+		    header_offset off;
+		    off.hash = __ac_X31_hash_string( filename(fileName) );
+		    off.size= size;
+		    off.offset_start= offset; 
                     
                     header_write_offset(pakFile, &off, f_index++);
                     
@@ -341,9 +345,14 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
                     }
                     
                     // copy the data from the temp compressed file to the pak file
-                    fseek(pakFile, start_offset, SEEK_SET);
+		    //                    fseek(pakFile, start_offset, SEEK_SET);
+		    //fseek(pakFile, 0L, SEEK_SET);
+		    fseek(pakFile, 0L, SEEK_END);
+		    
+		    int d= 0;
                     while (!feof(tempFile))
                     {
+
                         fread(&byte, sizeof(char), 1, tempFile);
                         fwrite(&byte, sizeof(char), 1, pakFile);
                     }
