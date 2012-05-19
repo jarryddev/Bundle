@@ -29,10 +29,17 @@ either expressed or implied, of the FreeBSD Project.
 
 */
 
+#include <fcntl.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+
 #include "khash.h"
 #include "header.h"
 #include "hash.h"
-#import <unistd.h>
+#include <unistd.h>
+
 
 // initialize the hashmap type
 KHASH_MAP_INIT_INT(32, offset_p);
@@ -69,17 +76,15 @@ int hash_init(char *filename){
   khiter_t k;
   khint_t t;
 
-    char cwd[1024];
-    if (getcwd(cwd,1024)){
-        fprintf(stdout, "current dir: %s\n", cwd);
-    }
+  printf("before hashing %s\n", filename);
+    
   header_hash = kh_init(32);
 
-  if ((fh=fopen(filename, "r+b")) == NULL){
-    perror("fopen");
-    return -1;
-  }
-
+    if ((fh= fopen(filename, "rb")) == NULL){
+        perror("fopen");
+        return -1;
+    }
+    
   num_files = header_get_head(fh);
 
   if ((offsets = header_get_offsets(fh))==NULL){

@@ -26,15 +26,23 @@ Bundle_CocoaWrapper *wrapper;
 {
     [super viewDidLoad];
     
-    // Create file manager
-    NSError *error;
-    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSDirectoryEnumerator *direnum = [manager enumeratorAtPath:bundleRoot];
     
-    // Point to Document directory
-    NSString *documentsDirectory = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSString *filename;
     
-    // Write out the contents of home directory to console
-    NSLog(@"Documents directory: %@", [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:&error]);
+    NSLog(@"Bunde Root: %@", bundleRoot);
+    while ((filename = [direnum nextObject] )) {
+        
+        
+        if ([filename hasSuffix:@".pak"]) {   //change the suffix to what you are looking for
+             
+            NSLog(@"%@", filename);
+        }
+        
+    }
+
 
     
     // setup bundle

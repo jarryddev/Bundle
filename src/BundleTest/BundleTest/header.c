@@ -291,14 +291,14 @@ offset_p* header_get_offsets(FILE *fh){
     memcpy(&(*offsets[i]).size, buff, sizeof(size_t));
     buff+=sizeof(size_t);
     memcpy(&(*offsets[i]).compressed, buff, sizeof(char));
-    
+      buff+=sizeof(char);
     //    printf("hash read: %p\n", t_offsets[i].hash);
     //    printf("offset start read: %p\n", t_offsets[i].offset_start);
     //    printf("offset size read: %p\n", t_offsets[i].size);
   }
 
 
-  buff-= s*n_files;
+  buff-= (sizeof(size_t) + sizeof(khint_t) + sizeof(long int) + sizeof(char))*n_files;
   free(buff);
   buff=NULL;
 
