@@ -41,10 +41,9 @@ either expressed or implied, of the FreeBSD Project.
 
 - (void) bundleStart:(NSString *)filename withMData:(struct mappedData *)mData
 {
-    
-//    NSString *docsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-//    NSString *filePath = [docsPath stringByAppendingPathComponent:filename];
-    bundle_start([filename UTF8String], mData);
+    NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
+    NSString *filePath = [bundleRoot stringByAppendingPathComponent:filename];
+    bundle_start([filePath fileSystemRepresentation], mData);
 }
 
 - (NSData *) bundle_useFile:(NSString *) fileName withMappedData:(struct mappedData *)mData

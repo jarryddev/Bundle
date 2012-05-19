@@ -29,10 +29,12 @@ either expressed or implied, of the FreeBSD Project.
 
 */
 
+
 #include <stdlib.h>
 #include "header.h"
 #include "hash.h"
 #include "BundleMemoryMapping.h"
+
 
 /*
  *      compile using:
@@ -42,12 +44,14 @@ either expressed or implied, of the FreeBSD Project.
 int bundle_start(char *pakFile, struct mappedData *mData){
   int ret;
 
+    printf("%s\n", pakFile);
+    
   // hash file
-  if ((ret=hash_init(pakFile)) != 1){
+    if ((ret=hash_init(pakFile)) != 1){
     printf("Failed hashing %s, quitting...\n", pakFile);
     return -1;
   }
-
+   
   // map file...
   if(mapPakFile(pakFile, 0, mData) != 0)
     {
