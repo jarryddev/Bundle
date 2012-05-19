@@ -58,6 +58,8 @@ int bundle_start(char *pakFile, struct mappedData *mData){
       printf("Failed to map file %s", pakFile);
       return -1;
     }
+    else
+        printf("...\n");
   return 1;
 
 }
@@ -68,7 +70,7 @@ offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 
   //  get fileName offset and print it
   if ((offs = get_offset(fileName)) == NULL) return NULL;
-  offs->offset_start+=mmap_address;
+  //offs->offset_start+=mmap_address;
   return offs;
 }
 

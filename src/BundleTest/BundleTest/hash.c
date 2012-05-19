@@ -80,10 +80,10 @@ int hash_init(char *filename){
     
   header_hash = kh_init(32);
 
-    if ((fh= fopen(filename, "rb")) == NULL){
-        perror("fopen");
-        return -1;
-    }
+  if ((fh= fopen(filename, "rb")) == NULL){
+      perror("fopen");
+      return -1;
+  }
     
   num_files = header_get_head(fh);
 
@@ -94,15 +94,18 @@ int hash_init(char *filename){
   }
 
   for (i=0; i< num_files;i++){
+    printf("%d.jpg>", i);
     t= offsets[i]->hash;
-    k=kh_put(32, header_hash, t, &ret); // creating key
+    //k=kh_put(32, header_hash, t, &ret); // creating key
     // free(((header_hash)->vals[k])); // free what khash allocated
-    ((header_hash)->vals[k]) = malloc(sizeof(header_offset));
-    memcpy(&((header_hash)->vals[k]), &offsets[i], sizeof(header_offset)); // assigning value
+   
+      // ((header_hash)->vals[k]) = malloc(sizeof(header_offset));
+    //memcpy(&((header_hash)->vals[k]), &offsets[i], sizeof(header_offset)); // assigning value
+      //(header_hash)->vals[k] = offsets[i];
   }
 
   free(offsets);
-  offsets=NULL;
+  *offsets=NULL;
   fclose(fh);
 
   printf(" --- Hash created --- \n");
