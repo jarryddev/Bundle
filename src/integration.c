@@ -65,7 +65,7 @@ offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 
   //  get fileName offset and print it
   if ((offs = get_offset(fileName)) == NULL) return NULL;
-  //    offs->offset_start+=mmap_address;
+  offs->offset_start+=mmap_address;
   return offs;
 }
 
