@@ -320,7 +320,7 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
                     fseek(tempFile, 0L, SEEK_END);
 		    long size = ftell(tempFile);
 		    fseek(tempFile, 0L, SEEK_SET);
-		    offset= offset-HEADER_OFFSET_SIZE;
+		    offset= offset;//-HEADER_OFFSET_SIZE;
                     char *fileName = p->fts_path;
                     char *tempFileName = strdup(fileName);
                     

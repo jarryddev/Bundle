@@ -67,7 +67,8 @@ int hash_init(char *filename){
     FILE *fh;
     khiter_t k;
     khint_t t;
-    
+    header_offset toff;
+
     header_hash = kh_init(32);
     
     if ((fh=fopen(filename, "r+b")) == NULL){
@@ -84,11 +85,17 @@ int hash_init(char *filename){
     }
     
     for (i=0; i< num_files;i++){
+
         t= offsets[i]->hash;
+	toff.hash = offsets[i]->hash;
+	toff.offset_start = offsets[i]->offset_start;
+	toff.size = offsets[i]->size;
+	toff.compressed = offsets[i]->compressed;
+
         k=kh_put(32, header_hash, t, &ret); // creating key
         // free(((header_hash)->vals[k])); // free what khash allocated
-        ((header_hash)->vals[k]) = malloc(sizeof(header_offset));
-        memcpy(&((header_hash)->vals[k]), &offsets[i], sizeof(header_offset)); // assigning value
+	((header_hash)->vals[k]) = malloc(sizeof(header_offset));
+        memcpy(&((header_hash)->vals[k]), &offsets[i], sizeof(header_offset)); 
     }
     
     free(offsets);
@@ -116,8 +123,6 @@ offset_p get_offset(char *filename){
     }
     
     if (!kh_size(header_hash)) return NULL;
-    
-    printf("asking for hash %p\n", __ac_X31_hash_string(filename));
     
     k=kh_get(32, header_hash, __ac_X31_hash_string(filename)); // get key
     

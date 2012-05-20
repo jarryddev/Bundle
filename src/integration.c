@@ -65,7 +65,8 @@ offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 
   //  get fileName offset and print it
   if ((offs = get_offset(fileName)) == NULL) return NULL;
-  //    offs->offset_start+=mmap_address;
+  //      offs->offset_start+=mmap_address;
+
   return offs;
 }
 
@@ -95,9 +96,10 @@ int main(int argc, char **argv){
   offset_p offs;
   long int offset;
 
+
   bundle_start(filename, mData);
 
-  if ((offs=bundle_getIndexDataFor(file_to_locate, (long int)mData->mappedAddress)) == NULL){
+  if ((offs=bundle_getIndexDataFor(file_to_locate, mData->mappedAddress)) == NULL){
     printf("%s not found\n", file_to_locate);
     exit(1);
   }

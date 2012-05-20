@@ -130,20 +130,23 @@ int unMapPakFile (void *mappedAddress, size_t fileSize){
 
 unsigned char * getDataForOffsets(void *mappedAddress, size_t startOffset, size_t numberOfBtyes){
     unsigned char *temp;
-    temp = (unsigned char*)  mappedAddress+startOffset;
-    
+    temp = (unsigned char*)  (mappedAddress+startOffset);
+    //    temp = (unsigned char*) 200000 + startOffset;
     printf("Reading %lu bytes.\n", (unsigned long)numberOfBtyes);
     
     //	* EXAMPLE USAGE:
     FILE *sampleFile;
     sampleFile = fopen("Sample.png", "wb");
-    printf("number of bytes: %ld, strt offset: %lu\n vmap address: %lu, start offset: %lu\n", numberOfBtyes, startOffset,mappedAddress,startOffset);
-    size_t i;
-    for(i = startOffset; i < (startOffset + numberOfBtyes)/2; i++)
+    printf("number of bytes: %ld, strt offset: %lu\nvmap address: %lu\n", numberOfBtyes, startOffset,mappedAddress);
+    size_t i=0;
+    for(i = 0; i <  numberOfBtyes; i++)
     {
         fwrite(temp, 1, 1, sampleFile);
-        printf("Address [%02lu] : %X = %02X \n", (unsigned long)i, temp, *(temp));
+	printf("Address [%02lu] : %X = %02X \n", (unsigned long)i, temp, *(temp));
         temp++;
+    }
+    if (i){
+      printf("Wrote to Sample.png\n");
     }
     fclose(sampleFile);
     
