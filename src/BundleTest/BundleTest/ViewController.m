@@ -62,7 +62,7 @@ Bundle_CocoaWrapper *wrapper;
 - (IBAction)loadTwenty:(id)sender
 {
     NSString *filename = @"testImages.pak";
-    [wrapper bundleStart:filename withMData:mData];
+    bundle_start([filename fileSystemRepresentation], mData);
 }
 
 - (IBAction)loadForty:(id)sender
