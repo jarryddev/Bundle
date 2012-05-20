@@ -31,7 +31,7 @@
 
 // Bundle_CocoaWrapper.h
 
-#import "integration.c"
+#import "integration.h"
 
 @interface Bundle_CocoaWrapper
 
