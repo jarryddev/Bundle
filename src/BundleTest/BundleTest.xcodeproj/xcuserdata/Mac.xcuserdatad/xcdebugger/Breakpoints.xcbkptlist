@@ -43,7 +43,7 @@
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "BundleTest/integration.c"
@@ -52,65 +52,78 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "63"
          endingLineNumber = "63"
-         landmarkName = "bundle_start()"
+         landmarkName = "bundle_getIndexDataFor()"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "BundleTest/hash.c"
-         timestampString = "359149526.875"
+         filePath = "BundleTest/BundleCocoaWrapper.m"
+         timestampString = "359213825.671305"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "103"
-         endingLineNumber = "103"
-         landmarkName = "hash_init()"
-         landmarkType = "7">
+         startingLineNumber = "65"
+         endingLineNumber = "65"
+         landmarkName = "-bundle_useFile:withMappedData:andPointer:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "BundleTest/hash.c"
-         timestampString = "359148894.01984"
+         filePath = "BundleTest/BundleCocoaWrapper.m"
+         timestampString = "359213825.671305"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "99"
-         endingLineNumber = "99"
-         landmarkName = "hash_init()"
-         landmarkType = "7">
+         startingLineNumber = "69"
+         endingLineNumber = "69"
+         landmarkName = "-bundle_useFile:withMappedData:andPointer:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "BundleTest/hash.c"
-         timestampString = "359148894.01984"
+         filePath = "BundleTest/BundleCocoaWrapper.m"
+         timestampString = "359213825.671305"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "98"
-         endingLineNumber = "98"
-         landmarkName = "hash_init()"
-         landmarkType = "7">
+         startingLineNumber = "61"
+         endingLineNumber = "61"
+         landmarkName = "-bundle_useFile:withMappedData:andPointer:"
+         landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "BundleTest/hash.c"
-         timestampString = "359148907.69376"
+         filePath = "BundleTest/BundleCocoaWrapper.m"
+         timestampString = "359213825.671305"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "97"
-         endingLineNumber = "97"
-         landmarkName = "hash_init()"
-         landmarkType = "7">
+         startingLineNumber = "58"
+         endingLineNumber = "58"
+         landmarkName = "-bundle_useFile:withMappedData:andPointer:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "BundleTest/BundleCocoaWrapper.m"
+         timestampString = "359213825.671305"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "55"
+         endingLineNumber = "55"
+         landmarkName = "-bundle_useFile:withMappedData:andPointer:"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
    <ExceptionBreakpoints>
       <ExceptionBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          scope = "0"
