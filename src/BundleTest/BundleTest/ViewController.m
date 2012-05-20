@@ -47,14 +47,14 @@ Bundle_CocoaWrapper *wrapper;
     
     // setup bundle
     mData = malloc(sizeof(struct mappedData));
-    
     wrapper = [[Bundle_CocoaWrapper alloc] init];
-    
 }
 
 - (IBAction)getFile:(id)sender
 {
     [textField resignFirstResponder];
+    NSLog(@"Text field .text is %@", textField.text);
+    printf("mData in viewDidLoad is %X", mData->mappedAddress);
     NSData *data = [wrapper bundle_useFile:textField.text withMappedData:mData];
     imageView.image = [UIImage imageWithData:data];
 }

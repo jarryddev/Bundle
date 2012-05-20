@@ -43,13 +43,16 @@ either expressed or implied, of the FreeBSD Project.
 {
     NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
     NSString *filePath = [bundleRoot stringByAppendingPathComponent:filename];
-    bundle_start([filePath fileSystemRepresentation], mData);
+    int ret = bundle_start([filePath fileSystemRepresentation], mData);
+    if (ret == 1) {
+        NSLog(@"Bundle Started");
+    }
 }
 
 - (NSData *) bundle_useFile:(NSString *) fileName withMappedData:(struct mappedData *)mData andPointer:(NSData *) data
 {
 	// convert NSString to char *
-	const char *file = [fileName sys];
+	const char *file = [fileName fileSystemRepresentation];
 	
 	// get index data for file
 	offset_p offset = bundle_getIndexDataFor(file, (long) mData->mappedAddress);

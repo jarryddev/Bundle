@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04416B6E1569264D00D61862 /* testImages.pak in Resources */ = {isa = PBXBuildFile; fileRef = 04416B6D1569260800D61862 /* testImages.pak */; };
 		048349E51565494700647D64 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048349E41565494700647D64 /* UIKit.framework */; };
 		048349E71565494700647D64 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048349E61565494700647D64 /* Foundation.framework */; };
 		048349E91565494700647D64 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048349E81565494700647D64 /* CoreGraphics.framework */; };
@@ -18,7 +19,6 @@
 		048349FD1565494700647D64 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 048349FB1565494700647D64 /* ViewController.xib */; };
 		04834A17156560F100647D64 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04834A16156560F100647D64 /* libz.1.2.5.dylib */; };
 		04834A1A1565663900647D64 /* BundleCocoaWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 04834A061565606400647D64 /* BundleCocoaWrapper.m */; };
-		048A35461567D18800DB377B /* testImages.pak in Resources */ = {isa = PBXBuildFile; fileRef = 048A35451567D18800DB377B /* testImages.pak */; };
 		04AB50801565DBB400552954 /* BundleCheckFileType.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A041565606400647D64 /* BundleCheckFileType.c */; };
 		04AB50811565DBB400552954 /* BundleHandler.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A071565606400647D64 /* BundleHandler.c */; };
 		04AB50821565DBB400552954 /* BundleMemoryMapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 04834A091565606400647D64 /* BundleMemoryMapping.c */; };
@@ -28,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04416B6D1569260800D61862 /* testImages.pak */ = {isa = PBXFileReference; lastKnownFileType = file; path = testImages.pak; sourceTree = "<group>"; };
 		046DCD09156595A500C30803 /* BundleCocoaWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BundleCocoaWrapper.h; sourceTree = "<group>"; };
 		048349E01565494600647D64 /* BundleTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BundleTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		048349E41565494700647D64 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -58,7 +59,6 @@
 		04834A121565606400647D64 /* khash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = khash.h; sourceTree = "<group>"; };
 		04834A151565606400647D64 /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		04834A16156560F100647D64 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
-		048A35451567D18800DB377B /* testImages.pak */ = {isa = PBXFileReference; lastKnownFileType = file; path = testImages.pak; sourceTree = "<group>"; };
 		04AB50861565DD9300552954 /* integration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = integration.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,7 +158,7 @@
 		048A35441567D0F200DB377B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				048A35451567D18800DB377B /* testImages.pak */,
+				04416B6D1569260800D61862 /* testImages.pak */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -217,7 +217,7 @@
 				048349EF1565494700647D64 /* InfoPlist.strings in Resources */,
 				048349F71565494700647D64 /* BundleTest.entitlements in Resources */,
 				048349FD1565494700647D64 /* ViewController.xib in Resources */,
-				048A35461567D18800DB377B /* testImages.pak in Resources */,
+				04416B6E1569264D00D61862 /* testImages.pak in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
