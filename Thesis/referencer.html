@@ -1,0 +1,80 @@
+<html>
+<head>
+
+<style>
+table {
+600px;
+background-color: #f3f3f3;
+padding: 5px;
+}
+
+#prev{
+font-size: 14px;
+}
+
+</style>
+</head>
+<body>
+
+<table>
+<tr><td>Author:</td><td><input type="text" id="author" /></td><td>Author 2:</td><td><input type="text" id="author2" /></td><td> et al.:<input type='checkbox' id='etal'/></td></tr>
+<tr><td>Title:</td><td><input type="text" id="title" /></td></tr>
+<tr><td>Year:</td><td><input type="text" id="year" /></td></tr>
+<tr><td>City:</Td><td><input type="text" id="city" /></td></tr>
+<tr><td>Publised by:</td><td><input type="text" id="publish" /></td></tr>
+
+</table>
+
+<div id="list">
+
+</div>
+
+<script type="text/javascript">
+
+update();
+
+author.addEventListener('keyup', function(){
+update();
+});
+title.addEventListener('keyup', function(){
+update();
+});
+author2.addEventListener('keyup', function(){
+update();
+});
+year.addEventListener('keyup', function(){
+update();
+});
+city.addEventListener('keyup', function(){
+update();
+});
+publish.addEventListener('keyup', function(){
+update();
+});
+
+function update(){
+
+list = document.getElementById("list");
+intext = document.getElementById("intext");
+var author = document.getElementById("author");
+author2 = document.getElementById("author2");
+title = document.getElementById("title");
+year = document.getElementById("year");
+publish = document.getElementById("publish");
+city = document.getElementById("city"); 
+
+if (author2.value){
+var auth = author.value+" and "+author2.value;
+} else auth=author.value;
+var ref= auth+", "+year.value+". "+title.value+". "+city.value+". "+publish.value;
+
+
+
+list.innerHTML=ref;
+}
+
+</script>
+
+
+</body>
+</html>
