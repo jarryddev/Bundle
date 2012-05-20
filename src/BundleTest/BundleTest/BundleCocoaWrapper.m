@@ -46,19 +46,19 @@ either expressed or implied, of the FreeBSD Project.
     bundle_start([filePath fileSystemRepresentation], mData);
 }
 
-- (NSData *) bundle_useFile:(NSString *) fileName withMappedData:(struct mappedData *)mData
+- (NSData *) bundle_useFile:(NSString *) fileName withMappedData:(struct mappedData *)mData andPointer:(NSData *) data
 {
 	// convert NSString to char *
-	const char *file = [fileName UTF8String];
+	const char *file = [fileName sys];
 	
 	// get index data for file
-	offset_p offset = bundle_getIndexDataFor(file, &mData->mappedAddress);
+	offset_p offset = bundle_getIndexDataFor(file, (long) mData->mappedAddress);
 	
     // create temp pointer
     void *offsetPointer = &offset->offset_start;
     
 	// create data from file in mapped segment
-	NSData *data;
+
 	data = [NSData dataWithBytesNoCopy:offsetPointer
                                 length:offset->size 
                         freeWhenDone:NO];
@@ -70,10 +70,10 @@ either expressed or implied, of the FreeBSD Project.
 - (NSNumber *) isFileCompressed:(NSString *) fileName withMappedData:(struct mappedData *)mData
 {
 	// convert NSString to char *
-	const char *file = [fileName UTF8String];
+	const char *file = [fileName fileSystemRepresentation];
 	
 	// get index data for file
-	offset_p offset = bundle_getIndexDataFor(file, &mData->mappedAddress);
+	offset_p offset = bundle_getIndexDataFor(file, (long)mData->mappedAddress);
 	
 	return [NSNumber numberWithChar:offset->compressed];
 }

@@ -68,19 +68,20 @@ Bundle_CocoaWrapper *wrapper;
 - (IBAction)loadForty:(id)sender
 {
     NSString *filename = @"test40.pak";
-    bundle_start([filename UTF8String], mData);
+    bundle_start([filename fileSystemRepresentation], mData);
+    NSLog(@"......");
 }
 
 - (IBAction)loadEighty:(id)sender
 {
     NSString *filename = @"test80.pak";
-    bundle_start([filename UTF8String], mData);
+    bundle_start([filename fileSystemRepresentation], mData);
 }
 
 - (IBAction)loadOneSixty:(id)sender
 {
     NSString *filename = @"test160.pak";
-    bundle_start([filename UTF8String], mData);
+    bundle_start([filename fileSystemRepresentation], mData);
 }
 
 - (IBAction)twentyMbSeq:(id)sender

@@ -1,0 +1,93 @@
+No extenstions to compress
+
+
+----------------
+
+Creating the Bundle
+
+>dir: testImages
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/1.jpg
+hash  : 0x2c904a4
+	>The offset for testImages/1.jpg is 225
+	>The written size of 1.jpg is 628406
+	>1.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/10.jpg
+hash  : 0x56586392
+	>The offset for testImages/10.jpg is 628650
+	>The written size of 10.jpg is 194378
+	>10.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/2.jpg
+hash  : 0x2d71c25
+	>The offset for testImages/2.jpg is 823046
+	>The written size of 2.jpg is 194378
+	>2.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/3.jpg
+hash  : 0x2e533a6
+	>The offset for testImages/3.jpg is 1017442
+	>The written size of 3.jpg is 628406
+	>3.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/4.jpg
+hash  : 0x2f34b27
+	>The offset for testImages/4.jpg is 1645866
+	>The written size of 4.jpg is 194378
+	>4.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/5.jpg
+hash  : 0x30162a8
+	>The offset for testImages/5.jpg is 1840262
+	>The written size of 5.jpg is 628406
+	>5.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/6.jpg
+hash  : 0x30f7a29
+	>The offset for testImages/6.jpg is 2468686
+	>The written size of 6.jpg is 194378
+	>6.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/7.jpg
+hash  : 0x31d91aa
+	>The offset for testImages/7.jpg is 2663082
+	>The written size of 7.jpg is 628406
+	>7.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/8.jpg
+hash  : 0x32ba92b
+	>The offset for testImages/8.jpg is 3291506
+	>The written size of 8.jpg is 194378
+	>8.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	>file: testImages/9.jpg
+hash  : 0x339c0ac
+	>The offset for testImages/9.jpg is 3485902
+	>The written size of 9.jpg is 628406
+	>9.jpg was added to the bundle
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Bundle created: test.pak
+
