@@ -61,12 +61,13 @@ int bundle_start(char *pakFile, struct mappedData *mData){
 
 offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 {
-  offset_p offs;
-
-  //  get fileName offset and print it
-  if ((offs = get_offset(fileName)) == NULL) return NULL;
-  //      offs->offset_start+=mmap_address;
-  return offs;
+    offset_p offs;
+    
+    //  get fileName offset and print it
+    if ((offs = get_offset(fileName)) == NULL) return NULL;
+    //      offs->offset_start+=mmap_address;
+    printf("address is %lu\n", offs->offset_start);
+    return offs;
 }
 
 int bundle_stop(struct mappedData *mData){

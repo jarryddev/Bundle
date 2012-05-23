@@ -54,8 +54,11 @@ either expressed or implied, of the FreeBSD Project.
 	const char *file = [fileName fileSystemRepresentation];
 	
 	// get index data for file
-	offset_p offset = bundle_getIndexDataFor(file, (long) mData->mappedAddress);
-	
+	offset_p offset =  malloc(sizeof(offset_p));
+    offset = bundle_getIndexDataFor(file, (long) mData->mappedAddress);
+    
+    NSLog(@"Offset received is %lu", offset->offset_start);
+    
     // create temp pointer
     void *offsetPointer = offset->offset_start;
     

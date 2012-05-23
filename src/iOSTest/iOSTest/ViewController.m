@@ -54,6 +54,8 @@ struct mappedData *mData;
 - (IBAction)get1:(id)sender {
     NSData *data = NULL;
     data = [wrapper bundle_useFile:@"1.jpg" withMappedData:mData andPointer:data];
+    NSString *someString = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+    NSLog(@"Data is %@", someString);
     image.image = [UIImage imageWithData:data];
 }
 
