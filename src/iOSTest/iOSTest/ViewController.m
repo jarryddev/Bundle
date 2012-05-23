@@ -17,7 +17,7 @@
 @implementation ViewController
 @synthesize image;
 
-Bundle_CocoaWrapper *wrapper;
+BundleCocoaWrapper *wrapper;
 struct mappedData *mData;
 
 - (void) startBundle
@@ -25,7 +25,7 @@ struct mappedData *mData;
     // test bundle here.
     
     // create wrapper object to use methods
-    wrapper = [[Bundle_CocoaWrapper alloc] init];
+    wrapper = [[BundleCocoaWrapper alloc] init];
     
     // create struct pointer. (holds mapped address and filesize)
     mData = malloc(sizeof(struct mappedData));

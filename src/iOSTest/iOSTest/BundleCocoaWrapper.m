@@ -33,11 +33,11 @@ either expressed or implied, of the FreeBSD Project.
 
 #import "BundleCocoaWrapper.h"
 
-@interface Bundle_CocoaWrapper ()
+@interface BundleCocoaWrapper ()
 
 @end
 
-@implementation Bundle_CocoaWrapper
+@implementation BundleCocoaWrapper
 
 - (void) bundleStart:(NSString *)filename withMData:(struct mappedData *)mData
 {

@@ -33,7 +33,7 @@
 
 #import "integration.h"
 
-@interface Bundle_CocoaWrapper: NSObject
+@interface BundleCocoaWrapper: NSObject
 
 
 - (void) bundleStart:(NSString *)filename withMData:(struct mappedData *)mData;
