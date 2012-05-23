@@ -7,21 +7,41 @@
 //
 
 #import "ViewController.h"
+#import "BundleCocoaWrapper.h"
+#import "integration.h"
 
 @interface ViewController ()
 
 @end
 
 @implementation ViewController
+@synthesize image;
+
+Bundle_CocoaWrapper *wrapper;
+struct mappedData *mData;
+
+- (void) startBundle
+{
+    // test bundle here.
+    
+    // create wrapper object to use methods
+    wrapper = [[Bundle_CocoaWrapper alloc] init];
+    
+    // create struct pointer. (holds mapped address and filesize)
+    mData = malloc(sizeof(struct mappedData));
+    
+    [wrapper bundleStart:@"testImages.pak" withMData:mData];
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+	[self startBundle];
 }
 
 - (void)viewDidUnload
 {
+    [self setImage:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -31,4 +51,17 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
+- (IBAction)get1:(id)sender {
+    NSData *data = NULL;
+    data = [wrapper bundle_useFile:@"1.jpg" withMappedData:mData andPointer:data];
+    image.image = [UIImage imageWithData:data];
+}
+
+- (IBAction)get6:(id)sender {
+    
+}
+- (void)dealloc {
+    [image release];
+    [super dealloc];
+}
 @end

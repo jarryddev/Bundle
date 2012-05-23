@@ -10,4 +10,10 @@
 
 @interface ViewController : UIViewController
 
+@property (retain, nonatomic) IBOutlet UIImageView *image;
+
+- (IBAction)get1:(id)sender;
+- (IBAction)get6:(id)sender;
+
+
 @end

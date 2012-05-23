@@ -16,6 +16,15 @@
 		040C9905156D2A63009D5782 /* iOSTest.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 040C9904156D2A63009D5782 /* iOSTest.entitlements */; };
 		040C9908156D2A63009D5782 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040C9907156D2A63009D5782 /* ViewController.m */; };
 		040C990B156D2A63009D5782 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 040C9909156D2A63009D5782 /* ViewController.xib */; };
+		040C9922156D2A9A009D5782 /* BundleCheckFileType.c in Sources */ = {isa = PBXBuildFile; fileRef = 040C9912156D2A9A009D5782 /* BundleCheckFileType.c */; };
+		040C9923156D2A9A009D5782 /* BundleCocoaWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 040C9915156D2A9A009D5782 /* BundleCocoaWrapper.m */; };
+		040C9924156D2A9A009D5782 /* BundleHandler.c in Sources */ = {isa = PBXBuildFile; fileRef = 040C9916156D2A9A009D5782 /* BundleHandler.c */; };
+		040C9925156D2A9A009D5782 /* BundleMemoryMapping.c in Sources */ = {isa = PBXBuildFile; fileRef = 040C9918156D2A9A009D5782 /* BundleMemoryMapping.c */; };
+		040C9926156D2A9A009D5782 /* hash.c in Sources */ = {isa = PBXBuildFile; fileRef = 040C991A156D2A9A009D5782 /* hash.c */; };
+		040C9927156D2A9A009D5782 /* header.c in Sources */ = {isa = PBXBuildFile; fileRef = 040C991C156D2A9A009D5782 /* header.c */; };
+		040C9928156D2A9A009D5782 /* integration.c in Sources */ = {isa = PBXBuildFile; fileRef = 040C991E156D2A9A009D5782 /* integration.c */; };
+		040C992A156D2AB9009D5782 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 040C9929156D2AB9009D5782 /* libz.1.2.5.dylib */; };
+		040C992D156D39C3009D5782 /* testImages.pak in Resources */ = {isa = PBXBuildFile; fileRef = 040C992C156D39C3009D5782 /* testImages.pak */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +42,24 @@
 		040C9906156D2A63009D5782 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		040C9907156D2A63009D5782 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		040C990A156D2A63009D5782 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		040C9912156D2A9A009D5782 /* BundleCheckFileType.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BundleCheckFileType.c; sourceTree = "<group>"; };
+		040C9913156D2A9A009D5782 /* BundleCheckFileType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BundleCheckFileType.h; sourceTree = "<group>"; };
+		040C9914156D2A9A009D5782 /* BundleCocoaWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BundleCocoaWrapper.h; sourceTree = "<group>"; };
+		040C9915156D2A9A009D5782 /* BundleCocoaWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BundleCocoaWrapper.m; sourceTree = "<group>"; };
+		040C9916156D2A9A009D5782 /* BundleHandler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BundleHandler.c; sourceTree = "<group>"; };
+		040C9917156D2A9A009D5782 /* BundleHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BundleHandler.h; sourceTree = "<group>"; };
+		040C9918156D2A9A009D5782 /* BundleMemoryMapping.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BundleMemoryMapping.c; sourceTree = "<group>"; };
+		040C9919156D2A9A009D5782 /* BundleMemoryMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BundleMemoryMapping.h; sourceTree = "<group>"; };
+		040C991A156D2A9A009D5782 /* hash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hash.c; sourceTree = "<group>"; };
+		040C991B156D2A9A009D5782 /* hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hash.h; sourceTree = "<group>"; };
+		040C991C156D2A9A009D5782 /* header.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = header.c; sourceTree = "<group>"; };
+		040C991D156D2A9A009D5782 /* header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = "<group>"; };
+		040C991E156D2A9A009D5782 /* integration.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = integration.c; sourceTree = "<group>"; };
+		040C991F156D2A9A009D5782 /* integration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = integration.h; sourceTree = "<group>"; };
+		040C9920156D2A9A009D5782 /* khash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = khash.h; sourceTree = "<group>"; };
+		040C9921156D2A9A009D5782 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		040C9929156D2AB9009D5782 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
+		040C992C156D39C3009D5782 /* testImages.pak */ = {isa = PBXFileReference; lastKnownFileType = file; path = testImages.pak; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040C992A156D2AB9009D5782 /* libz.1.2.5.dylib in Frameworks */,
 				040C98F3156D2A63009D5782 /* UIKit.framework in Frameworks */,
 				040C98F5156D2A63009D5782 /* Foundation.framework in Frameworks */,
 				040C98F7156D2A63009D5782 /* CoreGraphics.framework in Frameworks */,
@@ -52,6 +80,7 @@
 		040C98E3156D2A63009D5782 = {
 			isa = PBXGroup;
 			children = (
+				040C9929156D2AB9009D5782 /* libz.1.2.5.dylib */,
 				040C98F8156D2A63009D5782 /* iOSTest */,
 				040C98F1156D2A63009D5782 /* Frameworks */,
 				040C98EF156D2A63009D5782 /* Products */,
@@ -79,6 +108,8 @@
 		040C98F8156D2A63009D5782 /* iOSTest */ = {
 			isa = PBXGroup;
 			children = (
+				040C992B156D39A5009D5782 /* pak files */,
+				040C9911156D2A7A009D5782 /* Bundle */,
 				040C9901156D2A63009D5782 /* AppDelegate.h */,
 				040C9902156D2A63009D5782 /* AppDelegate.m */,
 				040C9906156D2A63009D5782 /* ViewController.h */,
@@ -99,6 +130,37 @@
 				040C9904156D2A63009D5782 /* iOSTest.entitlements */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		040C9911156D2A7A009D5782 /* Bundle */ = {
+			isa = PBXGroup;
+			children = (
+				040C9912156D2A9A009D5782 /* BundleCheckFileType.c */,
+				040C9913156D2A9A009D5782 /* BundleCheckFileType.h */,
+				040C9914156D2A9A009D5782 /* BundleCocoaWrapper.h */,
+				040C9915156D2A9A009D5782 /* BundleCocoaWrapper.m */,
+				040C9916156D2A9A009D5782 /* BundleHandler.c */,
+				040C9917156D2A9A009D5782 /* BundleHandler.h */,
+				040C9918156D2A9A009D5782 /* BundleMemoryMapping.c */,
+				040C9919156D2A9A009D5782 /* BundleMemoryMapping.h */,
+				040C991A156D2A9A009D5782 /* hash.c */,
+				040C991B156D2A9A009D5782 /* hash.h */,
+				040C991C156D2A9A009D5782 /* header.c */,
+				040C991D156D2A9A009D5782 /* header.h */,
+				040C991E156D2A9A009D5782 /* integration.c */,
+				040C991F156D2A9A009D5782 /* integration.h */,
+				040C9920156D2A9A009D5782 /* khash.h */,
+				040C9921156D2A9A009D5782 /* types.h */,
+			);
+			name = Bundle;
+			sourceTree = "<group>";
+		};
+		040C992B156D39A5009D5782 /* pak files */ = {
+			isa = PBXGroup;
+			children = (
+				040C992C156D39C3009D5782 /* testImages.pak */,
+			);
+			name = "pak files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +217,7 @@
 				040C98FD156D2A63009D5782 /* InfoPlist.strings in Resources */,
 				040C9905156D2A63009D5782 /* iOSTest.entitlements in Resources */,
 				040C990B156D2A63009D5782 /* ViewController.xib in Resources */,
+				040C992D156D39C3009D5782 /* testImages.pak in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +231,13 @@
 				040C98FF156D2A63009D5782 /* main.m in Sources */,
 				040C9903156D2A63009D5782 /* AppDelegate.m in Sources */,
 				040C9908156D2A63009D5782 /* ViewController.m in Sources */,
+				040C9922156D2A9A009D5782 /* BundleCheckFileType.c in Sources */,
+				040C9923156D2A9A009D5782 /* BundleCocoaWrapper.m in Sources */,
+				040C9924156D2A9A009D5782 /* BundleHandler.c in Sources */,
+				040C9925156D2A9A009D5782 /* BundleMemoryMapping.c in Sources */,
+				040C9926156D2A9A009D5782 /* hash.c in Sources */,
+				040C9927156D2A9A009D5782 /* header.c in Sources */,
+				040C9928156D2A9A009D5782 /* integration.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
