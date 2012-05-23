@@ -166,11 +166,11 @@ void header_write_offset(FILE *fh, offset_p offp, unsigned int index){
     bzero(buff, HEADER_OFFSET_SIZE);
     
     // fill up buffer
-    memcpy(buff + sizeof(khint_t) + sizeof(long int) + sizeof(size_t), (void *)&offp->compressed, sizeof(char));
-    memcpy(buff + sizeof(khint_t) + sizeof(long int), (void*)&offp->size, sizeof(size_t));
-    memcpy(buff + sizeof(khint_t), (void *)&offp->offset_start, sizeof(long int));
     memcpy(buff, (void *)&offp->hash, sizeof(khint_t));
-    
+    memcpy(buff + sizeof(khint_t), (void *)&offp->offset_start, sizeof(long int));
+    memcpy(buff + sizeof(khint_t) + sizeof(long int), (void*)&offp->size, sizeof(size_t));
+    memcpy(buff + sizeof(khint_t) + sizeof(long int) + sizeof(size_t), (void *)&offp->compressed, sizeof(char));
+
     // jump to end of header  
     fseek(fh, sizeof(unsigned int) + (index*HEADER_OFFSET_SIZE), SEEK_SET); /* todo: err check */
     
