@@ -35,6 +35,8 @@
 
 @interface Bundle_CocoaWrapper
 
+
+- (void) bundleStart:(NSString *)filename withMData:(struct mappedData *)mData;
 - (NSData *) bundle_useFile:(NSString *) fileName withMappedData:(struct mappedData *)mData;
 - (NSNumber *) isFileCompressed:(NSString *) fileName withMappedData:(struct mappedData *)mData;
 
