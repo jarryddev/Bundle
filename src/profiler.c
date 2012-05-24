@@ -14,17 +14,21 @@ long long doSum(long long  a){
  * Usage example 
  *
  */
-int main(){
+/*int main(){
   
   if (profiler_start()){
     int sum=doSum(100000L);
     printf("Call: doSum(), time: %lu\n", profiler_getTime());
   }
-}
+  }*/
 
 
 int profiler_start(){
   return (gettimeofday(&tv,NULL)==0);
+}
+
+void profiler_printTime(char *function_name){
+  printf("Call of %s took : %lu milliseconds\n", function_name, profiler_getTime());
 }
 
 suseconds_t profiler_getTime(){

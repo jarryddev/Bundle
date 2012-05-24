@@ -144,7 +144,7 @@ unsigned char * getDataForOffsets(void *mappedAddress, size_t startOffset, size_
     for(i = 0; i <  numberOfBtyes; i++)
     {
         fwrite(temp, 1, 1, sampleFile);
-	printf("Address [%02lu] : %X = %02X \n", (unsigned long)i, temp, *(temp));
+	//	printf("Address [%02lu] : %X = %02X \n", (unsigned long)i, temp, *(temp));
         temp++;
     }
     if (i){

@@ -1,6 +1,4 @@
 /*
-
-
 Copyright (c) <2012>, <Jarryd Hall, Taher Odeh>
 All rights reserved.
 
@@ -35,6 +33,8 @@ either expressed or implied, of the FreeBSD Project.
 #include "hash.h"
 #include "BundleMemoryMapping.h"
 
+#include "profiler.c"
+
 /*
  *      compile using:
  *      gcc integration.c -o ../bin/integration -L../lib -lheader -lhash
@@ -42,13 +42,18 @@ either expressed or implied, of the FreeBSD Project.
 
 int bundle_start(char *pakFile, struct mappedData *mData){
   int ret;
-
+  suseconds_t prof_time;
+  
+  profiler_start();
     // hash file
   if ((ret=hash_init(pakFile)) != 1){
     printf("Filed hashing %s, quitting...\n", pakFile);
     return -1;
   }
-
+  
+  profiler_printTime("hash_init");
+  
+  
   // map file...
   if(mapPakFile(pakFile, 0, mData) != 0)
     {
