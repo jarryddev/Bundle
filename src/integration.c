@@ -33,7 +33,7 @@ either expressed or implied, of the FreeBSD Project.
 #include "hash.h"
 #include "BundleMemoryMapping.h"
 
-#include "profiler.c"
+#include "profiler.h"
 
 /*
  *      compile using:
