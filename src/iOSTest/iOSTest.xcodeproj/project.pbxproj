@@ -25,6 +25,7 @@
 		040C9928156D2A9A009D5782 /* integration.c in Sources */ = {isa = PBXBuildFile; fileRef = 040C991E156D2A9A009D5782 /* integration.c */; };
 		040C992A156D2AB9009D5782 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 040C9929156D2AB9009D5782 /* libz.1.2.5.dylib */; };
 		040C992D156D39C3009D5782 /* testImages.pak in Resources */ = {isa = PBXBuildFile; fileRef = 040C992C156D39C3009D5782 /* testImages.pak */; };
+		04144AFB156ED226002D091C /* profiler.c in Sources */ = {isa = PBXBuildFile; fileRef = 04144AFA156ED226002D091C /* profiler.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,8 @@
 		040C9921156D2A9A009D5782 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		040C9929156D2AB9009D5782 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		040C992C156D39C3009D5782 /* testImages.pak */ = {isa = PBXFileReference; lastKnownFileType = file; path = testImages.pak; sourceTree = "<group>"; };
+		04144AFA156ED226002D091C /* profiler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = profiler.c; path = ../../profiler.c; sourceTree = "<group>"; };
+		04144AFD156ED4AD002D091C /* profiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = profiler.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +154,8 @@
 				040C991F156D2A9A009D5782 /* integration.h */,
 				040C9920156D2A9A009D5782 /* khash.h */,
 				040C9921156D2A9A009D5782 /* types.h */,
+				04144AFD156ED4AD002D091C /* profiler.h */,
+				04144AFA156ED226002D091C /* profiler.c */,
 			);
 			name = Bundle;
 			sourceTree = "<group>";
@@ -238,6 +243,7 @@
 				040C9926156D2A9A009D5782 /* hash.c in Sources */,
 				040C9927156D2A9A009D5782 /* header.c in Sources */,
 				040C9928156D2A9A009D5782 /* integration.c in Sources */,
+				04144AFB156ED226002D091C /* profiler.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +357,7 @@
 				040C9910156D2A63009D5782 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

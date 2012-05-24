@@ -1,6 +1,4 @@
 /*
-
-
 Copyright (c) <2012>, <Jarryd Hall, Taher Odeh>
 All rights reserved.
 
@@ -35,6 +33,8 @@ either expressed or implied, of the FreeBSD Project.
 #include "hash.h"
 #include "BundleMemoryMapping.h"
 
+#include "profiler.h"
+
 /*
  *      compile using:
  *      gcc integration.c -o ../bin/integration -L../lib -lheader -lhash
@@ -42,13 +42,18 @@ either expressed or implied, of the FreeBSD Project.
 
 int bundle_start(char *pakFile, struct mappedData *mData){
   int ret;
-
+  suseconds_t prof_time;
+  
+  profiler_start();
     // hash file
   if ((ret=hash_init(pakFile)) != 1){
     printf("Filed hashing %s, quitting...\n", pakFile);
     return -1;
   }
-
+  
+  profiler_printTime("hash_init");
+  
+  
   // map file...
   if(mapPakFile(pakFile, 0, mData) != 0)
     {
@@ -61,13 +66,12 @@ int bundle_start(char *pakFile, struct mappedData *mData){
 
 offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 {
-    offset_p offs;
-    
-    //  get fileName offset and print it
-    if ((offs = get_offset(fileName)) == NULL) return NULL;
-    //      offs->offset_start+=mmap_address;
-    printf("address is %lu\n", offs->offset_start);
-    return offs;
+  offset_p offs;
+
+  //  get fileName offset and print it
+  if ((offs = get_offset(fileName)) == NULL) return NULL;
+  //      offs->offset_start+=mmap_address;
+  return offs;
 }
 
 int bundle_stop(struct mappedData *mData){
@@ -75,7 +79,7 @@ int bundle_stop(struct mappedData *mData){
   return(unMapPakFile (mData->mappedAddress, mData->fileSize));
 }
 
-//// This will be done within an objective-C file
+// This will be done within an objective-C file
 //int main(int argc, char **argv){
 //
 //  /* Data needed by the dev to use Bundle
@@ -123,5 +127,5 @@ int bundle_stop(struct mappedData *mData){
 //  return 0;
 //}
 //
-
-
+//
+//

@@ -49,8 +49,7 @@
 #include "zlib.h"
 #include "header.h"
 #include "BundleHandler.h"
-//#include "BundleCheckFileType.h"
-#include "BundleCheckFileType.c"
+#include "BundleCheckFileType.h"
 static unsigned int fileCountForHeader=0;
 
 /////////////////////////////////////////////////////////////
