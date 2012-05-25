@@ -123,7 +123,7 @@ FILE *header_file_open(char *pkg_file){
  * returns a pointer to a new struct of the offset
  * existing according to the hash key passed.
  */
-offset_p header_read_offset(FILE *fh, khint_t hash){
+offset_p header_read_offset(FILE *fh, hash_size hash){
     unsigned int i,num_files = header_get_head(fh);
     
     fseek(fh, sizeof(unsigned int), SEEK_SET);
@@ -134,10 +134,10 @@ offset_p header_read_offset(FILE *fh, khint_t hash){
         buff = malloc( HEADER_OFFSET_SIZE );
         
         fread(buff, HEADER_OFFSET_SIZE, 1, fh);
-        memcpy(&offp->hash        , buff                            , sizeof(khint_t));
-        memcpy(&offp->offset_start, buff+sizeof(khint_t)              , sizeof(long int));
-        memcpy(&offp->size        , buff+sizeof(khint_t)+sizeof(long int), sizeof(size_t));
-        memcpy(&offp->compressed   , buff+sizeof(khint_t)+sizeof(long int)+sizeof(size_t), sizeof(char));
+        memcpy(&offp->hash        , buff                            , sizeof(hash_size));
+        memcpy(&offp->offset_start, buff+sizeof(hash_size)              , sizeof(long int));
+        memcpy(&offp->size        , buff+sizeof(hash_size)+sizeof(long int), sizeof(size_t));
+        memcpy(&offp->compressed   , buff+sizeof(hash_size)+sizeof(long int)+sizeof(size_t), sizeof(char));
         free(buff);
         buff= NULL;
         if (offp->hash == hash) return offp;
@@ -146,7 +146,7 @@ offset_p header_read_offset(FILE *fh, khint_t hash){
     return NULL;
 }
 
-offset_p get_vm_offst(FILE *fh, khint_t hash, long int vm_address){
+offset_p get_vm_offst(FILE *fh, hash_size hash, long int vm_address){
     offset_p offp = header_read_offset(fh, hash);
     if (offp == NULL) return NULL;
     
@@ -154,7 +154,7 @@ offset_p get_vm_offst(FILE *fh, khint_t hash, long int vm_address){
     return offp;
 }
 
-header_offset to_offset(khint_t hash, size_t filesize){
+header_offset to_offset(hash_size hash, size_t filesize){
     header_offset of;
     of.hash= hash;
     of.size= filesize;
@@ -166,10 +166,10 @@ void header_write_offset(FILE *fh, offset_p offp, unsigned int index){
     bzero(buff, HEADER_OFFSET_SIZE);
     
     // fill up buffer
-    memcpy(buff, (void *)&offp->hash, sizeof(khint_t));
-    memcpy(buff + sizeof(khint_t), (void *)&offp->offset_start, sizeof(long int));
-    memcpy(buff + sizeof(khint_t) + sizeof(long int), (void*)&offp->size, sizeof(size_t));
-    memcpy(buff + sizeof(khint_t) + sizeof(long int) + sizeof(size_t), (void *)&offp->compressed, sizeof(char));
+    memcpy(buff, (void *)&offp->hash, sizeof(hash_size));
+    memcpy(buff + sizeof(hash_size), (void *)&offp->offset_start, sizeof(long int));
+    memcpy(buff + sizeof(hash_size) + sizeof(long int), (void*)&offp->size, sizeof(size_t));
+    memcpy(buff + sizeof(hash_size) + sizeof(long int) + sizeof(size_t), (void *)&offp->compressed, sizeof(char));
 
     // jump to end of header  
     fseek(fh, sizeof(unsigned int) + (index*HEADER_OFFSET_SIZE), SEEK_SET); /* todo: err check */
@@ -222,7 +222,7 @@ unsigned int header_init(FILE *fh, unsigned int n_files){
 }
 
 void print_offset(offset_p off){
-    printf("OFFSET: ---- \n size: %p, offset: %p, hash: %p, compressed: %d\n", (size_t)off->size, (long int)off->offset_start, (khint_t)off->hash, (int)off->compressed);
+    printf("OFFSET: ---- \n size: %p, offset: %p, hash: %p, compressed: %d\n", (size_t)off->size, (long int)off->offset_start, (hash_size)off->hash, (int)off->compressed);
 }
 
 unsigned int header_get_head(FILE *fh){
@@ -285,8 +285,8 @@ offset_p* header_get_offsets(FILE *fh){
         
         offsets[i] = malloc( sizeof(header_offset) );
         
-        memcpy(&(*offsets[i]).hash, buff, sizeof(khint_t));
-        buff+= sizeof(khint_t);
+        memcpy(&(*offsets[i]).hash, buff, sizeof(hash_size));
+        buff+= sizeof(hash_size);
         memcpy(&(*offsets[i]).offset_start, buff, sizeof(long int));
         buff+= sizeof(long int);
         memcpy(&(*offsets[i]).size, buff, sizeof(size_t));
@@ -295,7 +295,7 @@ offset_p* header_get_offsets(FILE *fh){
         buff+=sizeof(char);
     }
     
-    buff-= n_files*(sizeof(size_t)+sizeof(long int)+sizeof(khint_t)+sizeof(char));
+    buff-= n_files*(sizeof(size_t)+sizeof(long int)+sizeof(hash_size)+sizeof(char));
     free(buff);
     buff=NULL;
     

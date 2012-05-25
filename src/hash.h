@@ -1,5 +1,5 @@
 /*
- 
+
  Copyright (c) <2012>, <Jarryd Hall, Taher Odeh>
  All rights reserved.
  
@@ -29,8 +29,35 @@
  
  */
 
-#ifndef _HEADER_INCLUDED
-#include "header.h"
+#ifndef _HASH_INCLUDED
+
+#define _HASH_INCLUDED
+#include <stdlib.h>
+#include <stdint.h>
+
+typedef uint32_t hash_size;
+
+struct hashnode_s {
+  hash_size key;
+  void *data;
+  struct hashnode_s *next;
+};
+
+typedef struct hashtbl {
+  hash_size size;
+  struct hashnode_s **nodes;
+  hash_size (*hashfunc)(const char *);
+} HASHTBL;
+
+
+unsigned int bundle_hash_init(const char *);
+HASHTBL *hashtbl_create(hash_size size, hash_size (*hashfunc)(const char *));
+void hashtbl_destroy(HASHTBL *hashtbl);
+int hashtbl_insert(HASHTBL *hashtbl, hash_size key, void *data);
+int hashtbl_remove(HASHTBL *hashtbl, hash_size key);
+void *hashtbl_get(HASHTBL *hashtbl, hash_size key);
+int hashtbl_resize(HASHTBL *hashtbl, hash_size size);
+hash_size def_hashfunc(const char *key);
 #endif
 
 /**
@@ -39,26 +66,25 @@
  *
  **/
 
-// INTERFACE FUNCTIONS 
-
+/* INTERFACE FUNCTIONS  */
 
 /**
  * Returns the offset pointer corresponding to filename as
  * the key, or NULL of key does not exist
  */
-offset_p get_offset(char *);
+//offset_p get_offset(char *);
 
 /**
  * Initialize a hashtable, passing a pak filename to extract the header offsets from
  * and create a hashmap of [hash of filename]=>[offset].
  *
  */
-int hash_init(char *);
+//int hash_init(char *);
 
 
 /**
  * Output the elements in the hash table.
  */
-void hash_read();
+//void hash_read();
 
-void hash_destroy();
+//void hash_destroy();

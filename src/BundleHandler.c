@@ -48,6 +48,7 @@
 #include <unistd.h>
 #include "zlib.h"
 #include "header.h"
+#include "hash.h"
 #include "BundleHandler.h"
 #include "BundleCheckFileType.h"
 static unsigned int fileCountForHeader=0;
@@ -327,7 +328,7 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
               //offset_p off= malloc(HEADER_OFFSET_SIZE);
 
               header_offset off;
-              off.hash = __ac_X31_hash_string( filename(fileName) );
+              off.hash = def_hashfunc(fileName);
               off.size= size;
               off.offset_start= offset;
 

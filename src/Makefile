@@ -52,8 +52,8 @@ git_push:
 $(HEADER_OBJ): 
 	$(CC) $(CC_FLAGS) -c $(HEADER_SRC)
 
-$(OBJ):	$(HEADER_OBJ) header_lib
-	$(CC) -c $(BUNDLE_SRC) 
+$(OBJ):	$(HEADER_OBJ) hash_lib header_lib
+	$(CC) -c $(BUNDLE_SRC) BundleCheckFileType.c
 
 $(HASH_OBJ): header_lib
 	$(CC) $(CC_FLAGS) -c $(HASH_SRC)
@@ -61,8 +61,8 @@ $(HASH_OBJ): header_lib
 $(MMAP_OBJ): 
 	$(CC) $(CC_FLAGS) -c $(MMAP_SRC)
 
-bundle: $(OBJ)
-	$(CC) $(OBJ) $(LINK_FLAGS) -o $(BIN_DIR)/bundle
+bundle: $(OBJ) hash_lib header_lib
+	$(CC) $(OBJ) $(LINK_FLAGS) -L../lib -lhash -lheader -o $(BIN_DIR)/bundle 
 
 bundle_install: 
 	cp $(BIN_DIR)/bundle $(GLOBAL_BIN_DIR)/bundle

@@ -1,169 +1,201 @@
-/*
- 
- Copyright (c) <2012>, <Jarryd Hall, Taher Odeh>
- All rights reserved.
- 
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met: 
- 
- 1. Redistributions of source code must retain the above copyright notice, this
- list of conditions and the following disclaimer. 
- 2. Redistributions in binary form must reproduce the above copyright notice,
- this list of conditions and the following disclaimer in the documentation
- and/or other materials provided with the distribution. 
- 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
- The views and conclusions contained in the software and documentation are those
- of the authors and should not be interpreted as representing official policies, 
- either expressed or implied, of the FreeBSD Project.
- 
- */
-
-#include "khash.h"
-#include "header.h"
 #include "hash.h"
+#include "header.h"
+#include <string.h>
+#include <stdio.h>
 
-// initialize the hashmap type
-KHASH_MAP_INIT_INT(32, offset_p);
+HASHTBL *hashtbl;
 
-// GLOBAL HASH TABLE
-khash_t(32) *header_hash;
+unsigned int bundle_hash_init(const char *filename){
 
+  offset_p* offsets;
+  unsigned int num_files, i;
+  FILE *fh;
+  header_offset toff;
+  char *spain, *italy;
+  hash_size hash;
 
-/*int main(int argc, char **argv){
- if (argc != 3){
- printf("Usage: %s pakfile filename\n", argv[0]);
- exit(1);
- }
- 
- hash_init(argv[1]);
- //  hash_read();
- offset_p p= get_offset(argv[2]);
- print_offset(p);
- kh_destroy(32, header_hash);
- }*/
+  //  printf("hash size: %ld\n", sizeof(hash));
 
+  if ((fh=fopen(filename, "r+b")) == NULL){
+    perror("fopen");
+    return -1;
+  }
 
-/**
- * Initialize a hashtable, passing a pak filename to extract the header offsets from
- * and create a hashmap of [hash of filename]=>[offset].
- *
- */
-int hash_init(char *filename){
-    
-    offset_p* offsets;
-    unsigned int num_files, i;
-    int ret;
-    FILE *fh;
-    khiter_t k;
-    khint_t t;
-    header_offset toff;
+  num_files = header_get_head(fh);
 
-    header_hash = kh_init(32);
-    
-    if ((fh=fopen(filename, "r+b")) == NULL){
-        perror("fopen");
-        return -1;
-    }
-    
-    num_files = header_get_head(fh);
-    
-    if ((offsets = header_get_offsets(fh))==NULL){
-        fprintf(stderr, "Cannot get offsets ...\n");
-        fclose(fh);
-        return -1;
-    }
-    
-    for (i=0; i< num_files;i++){
-
-        t= offsets[i]->hash;
-	toff.hash = offsets[i]->hash;
-	toff.offset_start = offsets[i]->offset_start;
-	toff.size = offsets[i]->size;
-	toff.compressed = offsets[i]->compressed;
-
-        k=kh_put(32, header_hash, t, &ret); // creating key
-        // free(((header_hash)->vals[k])); // free what khash allocated
-	((header_hash)->vals[k]) = malloc(sizeof(header_offset));
-        memcpy(&((header_hash)->vals[k]), &offsets[i], sizeof(header_offset)); 
-	free(offsets[i]);
-    }
-    
-    free(offsets);
-    offsets=NULL;
+  // get offsets
+  if ((offsets = header_get_offsets(fh))==NULL){
+    fprintf(stderr, "Cannot get offsets ...\n");
     fclose(fh);
-    
-    printf(" --- Hash created --- \n");
-    printf(" buckets: %d, items: %d \n\n", kh_n_buckets(header_hash), kh_size(header_hash));
-    
-    return 1;
+    return -1;
+  }
+
+  // ceating hash table
+  if(!(hashtbl=hashtbl_create(num_files, NULL))) {
+    fprintf(stderr, "ERROR: hashtbl_create() failed\n");
+    exit(EXIT_FAILURE);
+  }
+
+  for (i=0; i< num_files;i++){
+    hash = offsets[i]->hash;//offsets[i]->hash;
+    print_offset(offsets[i]);
+    //    printf("hash: %p\n", hash);
+    hashtbl_insert(hashtbl, hash, offsets[i]);
+  }
+
+  fclose(fh);
+  return 0;
+
+
 }
 
-/**
- * Returns the offset pointer corresponding to filename as
- * the key, or NULL of key does not exist
- *
- */
-offset_p get_offset(char *filename){
-    
-    khiter_t k; // key
-    
-    if (header_hash == NULL){
-        printf("hash map not intiialized ...\n");
-        exit(1);
-    }
-    
-    if (!kh_size(header_hash)) return NULL;
-    
-    k=kh_get(32, header_hash, __ac_X31_hash_string(filename)); // get key
-    
-    if (k == kh_end(header_hash)) return NULL; // key does not exist
-    
-    return kh_value(header_hash, k);
+
+/*int main(void){
+  hash_size hash = 0x30162a8; //def_hashfunc("1.jpg");
+  if (bundle_hash_init("test.pak") == -1){
+    printf("error!");
+    return 0;
+  }
+  
+  offset_p offp= (offset_p)hashtbl_get(hashtbl, hash);
+  
+  printf("FOUND: !!\n");
+  print_offset(offp);
+  
+
+  hashtbl_destroy(hashtbl);
+  return 0;
+  }*/
+
+
+/*
+  int main(void){
+
+  HASHTBL *hashtbl;
+  char *spain, *italy;
+
+  if(!(hashtbl=hashtbl_create(6, NULL))) {
+  fprintf(stderr, "ERROR: hashtbl_create() failed\n");
+  exit(EXIT_FAILURE);
+  }
+
+  char *s= malloc(10);
+  strcpy(s, "Paris");
+  hashtbl_insert(hashtbl, def_hashfunc("France"), s);
+  hashtbl_insert(hashtbl, def_hashfunc("England"), s);
+  hashtbl_insert(hashtbl, def_hashfunc("Italy"), s);//"Rome");
+  char *s2= malloc(10);
+  strcpy(s2, "Stockholm");
+  hashtbl_insert(hashtbl, def_hashfunc("Sweden"), s2);
+  hashtbl_insert(hashtbl, def_hashfunc("Germany"), s);
+  hashtbl_insert(hashtbl, def_hashfunc("Norway"), s);//"Oslo");
+
+  printf("After insert:\n");
+  italy=hashtbl_get(hashtbl, def_hashfunc("Italy"));
+  printf("Italy: %s\n", italy?italy:"-");
+  spain=hashtbl_get(hashtbl, def_hashfunc("Sweden"));
+  printf("sweden: %s\n", spain?spain:"-");
+
+  hashtbl_destroy(hashtbl);
+  free(s); free(s2);
+  return 0;
+  }
+*/
+hash_size def_hashfunc(const char *key)
+{
+  hash_size hash=0;
+  while(*key) hash+=(unsigned char)*key++;
+  return hash;
 }
 
-/**
- * Output the elements in the hash table.
- */
-void hash_read(){
-    
-    khiter_t iter;
-    
-    if (header_hash == NULL){
-        printf("hash map not intiialized ...\n");
-        exit(1);
-    }
-    
-    for (iter = kh_begin(header_hash); iter != kh_end(header_hash); iter++){
-        if (kh_exist(header_hash, iter)) {
-            
-            printf("Hashmap key: %p\n", kh_key(header_hash, iter));
-            printf("Hashmap value: \n");
-            //      kh_get(32, header_hash,
-            print_offset(kh_value(header_hash, iter));
-            printf("---------------\n");
-        }
-    }
+static char *mystrdup(const char *s)
+{
+  char *b;
+  if(!(b=malloc(strlen(s)+1))) return NULL;
+  strcpy(b, s);
+  return b;
 }
 
-/**
- *  frees the hashmap
- */
-void hash_destroy(){
-    khiter_t iter;
-    
-    
-    kh_destroy(32, header_hash);
+HASHTBL *hashtbl_create(hash_size size, hash_size (*hashfunc)(const char *))
+{
+  HASHTBL *hashtbl;
+
+  if(!(hashtbl=malloc(sizeof(HASHTBL)))) return NULL;
+
+  if(!(hashtbl->nodes=calloc(size, sizeof(struct hashnode_s*)))) {
+    free(hashtbl);
+    return NULL;
+  }
+
+  hashtbl->size=size;
+
+  if(hashfunc) hashtbl->hashfunc=hashfunc;
+  else hashtbl->hashfunc=def_hashfunc;
+
+  return hashtbl;
+}
+
+
+int hashtbl_insert(HASHTBL *hashtbl, hash_size key, void *data)
+{
+  struct hashnode_s *node;
+  hash_size hash= key%hashtbl->size;
+
+  /*fprintf(stderr, "hashtbl_insert() key=%s, hash=%d, data=%s\n", key, hash, (char*)data);*/
+
+  node=hashtbl->nodes[hash];
+  while(node) {
+    if(node->key ==  key) {
+      node->data=data;
+      return 0;
+    }
+    node=node->next;
+  }
+  if(!(node=malloc(sizeof(struct hashnode_s)))) return -1;
+
+  node->key=key;
+  node->data=data;
+  node->next=hashtbl->nodes[hash];
+  hashtbl->nodes[hash]=node;
+
+  return 0;
+}
+
+void *hashtbl_get(HASHTBL *hashtbl, hash_size key)
+{
+  struct hashnode_s *node;
+  hash_size hash=key%hashtbl->size;
+
+  /*fprintf(stderr, "hashtbl_get() key=%s, hash=%d\n", key, hash);*/
+
+  node=hashtbl->nodes[hash];
+  while(node) {
+    printf("key : %p request: %p\n", node->key, key);
+    if(node->key == key) return node->data;
+    node=node->next;
+  }
+
+  return NULL;
+}
+
+void hashtbl_destroy(HASHTBL *hashtbl)
+{
+  hash_size n;
+  struct hashnode_s *node, *oldnode;
+
+  for(n=0; n<hashtbl->size; ++n) {
+    node=hashtbl->nodes[n];
+    while(node) {
+      oldnode=node;
+      node=node->next;
+      free(oldnode);
+
+      //      free(node->data); // todo: might have to free data
+
+    }
+  }
+  free(hashtbl->nodes);
+  free(hashtbl);
 }
 
 
