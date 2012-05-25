@@ -106,7 +106,7 @@ int mapPakFile(const char *fileToOpen, long startOffset, struct mappedData *mDat
 	  	if (ret < 0)
 	    	perror ("madvise");
         
-	  	//fclose(file);
+	  	fclose(file);
 	  	//printf("Reading %lu bytes.\n", (unsigned long)fileSize);
 	  	return 0;
     }
