@@ -95,6 +95,9 @@ struct mappedData *mData;
 - (IBAction)get6:(id)sender {
     
 }
+
+
+
 - (void)dealloc {
     [image release];
     [super dealloc];
