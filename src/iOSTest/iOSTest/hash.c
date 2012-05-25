@@ -96,6 +96,7 @@ int hash_init(char *filename){
         // free(((header_hash)->vals[k])); // free what khash allocated
 	((header_hash)->vals[k]) = malloc(sizeof(header_offset));
         memcpy(&((header_hash)->vals[k]), &offsets[i], sizeof(header_offset)); 
+	free(offsets[i]);
     }
     
     free(offsets);

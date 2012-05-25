@@ -1,9 +1,9 @@
 #include "profiler.h"
 
-long long doSum(long long  a){
-  if (a<=1) return 1L;
-  return a+doSum(a-1);
-}
+//long long doSum(long long  a){
+//  if (a<=1) return 1L;
+//  return a+doSum(a-1);
+//}
 
 /**
  * Usage example 
