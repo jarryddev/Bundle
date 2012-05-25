@@ -51,15 +51,43 @@ struct mappedData *mData;
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
+- (void) writeToFileTest:(NSData *)dataToWrite
+{
+    NSString *docsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *path = [docsDirectory stringByAppendingPathComponent:@"fileName.txt"];
+    
+    // Write the file
+    [dataToWrite writeToFile:path atomically:YES];
+    
+    // Read the file
+    UIImage *imageFromFile = [[UIImage alloc] initWithContentsOfFile:path];
+    //self.image = [[UIImageView alloc] init];
+    image.image = imageFromFile;
+    
+    // Check if file exists
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager fileExistsAtPath:path]; // Returns a BOOL    
+
+}
+
 - (IBAction)get1:(id)sender {
     NSData *data = NULL;
-    data = [wrapper bundle_useFile:@"1.jpg" withMappedData:mData andPointer:data];
-    if (data == NULL) {
+    //data = [wrapper bundle_useFile:@"1.jpg" withMappedData:mData andPointer:data];
+    
+    NSString *file = @"1.jpg";
+    
+    offset_p offset = bundle_getIndexDataFor([file fileSystemRepresentation], mData->mappedAddress);
+    if (offset != nil) {
+        data = [NSData dataWithBytesNoCopy:mData->mappedAddress+310 length:628406 freeWhenDone:NO];
+//        data = [NSData dataWithBytesNoCopy:mData->mappedAddress+310 length:628406 freeWhenDone:NO];
+    }
+    
+    if (data == nil) {
         NSLog(@".........");
     }
     else
     {
-        self.image = [[UIImageView alloc] init];
+    //    [self writeToFileTest:data];
         image.image = [UIImage imageWithData:data];
     }
 }
@@ -67,6 +95,9 @@ struct mappedData *mData;
 - (IBAction)get6:(id)sender {
     
 }
+
+
+
 - (void)dealloc {
     [image release];
     [super dealloc];

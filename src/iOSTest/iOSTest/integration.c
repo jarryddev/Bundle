@@ -44,15 +44,15 @@ int bundle_start(char *pakFile, struct mappedData *mData){
   int ret;
   suseconds_t prof_time;
   
-  profiler_start();
+  //profiler_start();
     // hash file
-  if ((ret=hash_init(pakFile)) != 1){
-    printf("Filed hashing %s, quitting...\n", pakFile);
-    return -1;
-  }
-  
-  profiler_printTime("hash_init");
-  
+//  if ((ret=hash_init(pakFile)) != 1){
+//    printf("Filed hashing %s, quitting...\n", pakFile);
+//    return -1;
+//  }
+//  
+//  profiler_printTime("hash_init");
+//  
   
   // map file...
   if(mapPakFile(pakFile, 0, mData) != 0)
