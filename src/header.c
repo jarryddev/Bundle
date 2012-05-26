@@ -165,6 +165,9 @@ void header_write_offset(FILE *fh, offset_p offp, unsigned int index){
     char *buff = malloc(HEADER_OFFSET_SIZE);
     bzero(buff, HEADER_OFFSET_SIZE);
     
+    printf("wrtingf now\n");
+    print_offset(offp);
+
     // fill up buffer
     memcpy(buff, (void *)&offp->hash, sizeof(hash_size));
     memcpy(buff + sizeof(hash_size), (void *)&offp->offset_start, sizeof(long int));

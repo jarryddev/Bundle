@@ -46,7 +46,7 @@ typedef struct{
   char compressed; // 1
 } header_offset, *offset_p;
 
-#define HEADER_OFFSET_SIZE (size_t)(sizeof(hash_size)+sizeof(long int)+sizeof(size_t)+sizeof(char))+3 // byte alignment ;
+#define HEADER_OFFSET_SIZE (size_t)(sizeof(hash_size)+sizeof(long int)+sizeof(size_t)+sizeof(char))  // byte alignment ;
 
 FILE* header_file_open(char *);
 void header_write_offset(FILE *,offset_p,unsigned int);

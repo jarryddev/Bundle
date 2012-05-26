@@ -3,16 +3,14 @@
 #include <string.h>
 #include <stdio.h>
 
-HASHTBL *hashtbl;
-
-unsigned int bundle_hash_init(const char *filename){
+HASHTBL *bundle_hash_init(const char *filename){
 
   offset_p* offsets;
   unsigned int num_files, i;
   FILE *fh;
   header_offset toff;
-  char *spain, *italy;
   hash_size hash;
+  HASHTBL *hashtbl;
 
   //  printf("hash size: %ld\n", sizeof(hash));
 
@@ -27,25 +25,22 @@ unsigned int bundle_hash_init(const char *filename){
   if ((offsets = header_get_offsets(fh))==NULL){
     fprintf(stderr, "Cannot get offsets ...\n");
     fclose(fh);
-    return -1;
+    return NULL;
   }
 
   // ceating hash table
   if(!(hashtbl=hashtbl_create(num_files, NULL))) {
     fprintf(stderr, "ERROR: hashtbl_create() failed\n");
-    exit(EXIT_FAILURE);
+    return NULL;
   }
 
   for (i=0; i< num_files;i++){
     hash = offsets[i]->hash;//offsets[i]->hash;
-    print_offset(offsets[i]);
-    //    printf("hash: %p\n", hash);
     hashtbl_insert(hashtbl, hash, offsets[i]);
   }
 
   fclose(fh);
-  return 0;
-
+  return hashtbl;
 
 }
 
@@ -154,7 +149,11 @@ int hashtbl_insert(HASHTBL *hashtbl, hash_size key, void *data)
   if(!(node=malloc(sizeof(struct hashnode_s)))) return -1;
 
   node->key=key;
-  node->data=data;
+
+  //  if (!(node->data= malloc(sizeof(header_offset)))) return -1;
+      
+  //  memcpy(&(*node).data, data, sizeof(header_offset));
+  node->data= data;
   node->next=hashtbl->nodes[hash];
   hashtbl->nodes[hash]=node;
 
@@ -169,11 +168,12 @@ void *hashtbl_get(HASHTBL *hashtbl, hash_size key)
   /*fprintf(stderr, "hashtbl_get() key=%s, hash=%d\n", key, hash);*/
 
   node=hashtbl->nodes[hash];
-  while(node) {
-    printf("key : %p request: %p\n", node->key, key);
-    if(node->key == key) return node->data;
-    node=node->next;
-  }
+  if (node) return node->data;
+  //   while(node) {
+  //     printf("key : %p request: %p\n", node->key, key);
+  //     if(node->key == key) return node->data;
+  //     node=node->next;
+  //    }
 
   return NULL;
 }
@@ -189,7 +189,6 @@ void hashtbl_destroy(HASHTBL *hashtbl)
       oldnode=node;
       node=node->next;
       free(oldnode);
-
       //      free(node->data); // todo: might have to free data
 
     }

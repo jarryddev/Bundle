@@ -331,6 +331,7 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
               off.hash = def_hashfunc(fileName);
               off.size= size;
               off.offset_start= offset;
+	      off.compressed= 0;
 
               header_write_offset(pakFile, &off, f_index++);
 

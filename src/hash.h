@@ -50,8 +50,8 @@ typedef struct hashtbl {
 } HASHTBL;
 
 
-unsigned int bundle_hash_init(const char *);
-HASHTBL *hashtbl_create(hash_size size, hash_size (*hashfunc)(const char *));
+HASHTBL* bundle_hash_init(const char *);
+HASHTBL* hashtbl_create(hash_size size, hash_size (*hashfunc)(const char *));
 void hashtbl_destroy(HASHTBL *hashtbl);
 int hashtbl_insert(HASHTBL *hashtbl, hash_size key, void *data);
 int hashtbl_remove(HASHTBL *hashtbl, hash_size key);
