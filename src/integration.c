@@ -35,23 +35,24 @@ either expressed or implied, of the FreeBSD Project.
 
 #include "profiler.h"
 
+HASHTBL *hashtbl;
+
 /*
  *      compile using:
  *      gcc integration.c -o ../bin/integration -L../lib -lheader -lhash
  */
-
 int bundle_start(char *pakFile, struct mappedData *mData){
   int ret;
   suseconds_t prof_time;
   
-  profiler_start();
-    // hash file
-  if ((ret=hash_init(pakFile)) != 1){
+  //  profiler_start();
+  // hash file
+  if ((hashtbl=bundle_hash_init(pakFile)) == NULL){
     printf("Filed hashing %s, quitting...\n", pakFile);
     return -1;
   }
   
-  profiler_printTime("hash_init");
+  //  profiler_printTime("hash_init");
   
   
   // map file...
@@ -67,15 +68,16 @@ int bundle_start(char *pakFile, struct mappedData *mData){
 offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 {
   offset_p offs;
-
+  
   //  get fileName offset and print it
-  if ((offs = get_offset(fileName)) == NULL) return NULL;
+  if ((offs = hashtbl_get(hashtbl, def_hashfunc(fileName))) == NULL) return NULL;
   //      offs->offset_start+=mmap_address;
+  
   return offs;
 }
 
 int bundle_stop(struct mappedData *mData){
-  hash_destroy();
+  hashtbl_destroy(hashtbl);
   return(unMapPakFile (mData->mappedAddress, mData->fileSize));
 }
 
@@ -116,14 +118,14 @@ int main(int argc, char **argv){
   //  free(retData);
   free(mData);
   free(offs);
-
+  
   //  mData=offs=NULL;
   /* Run Game Code From here */
   
   /* When done stop Bundle
-  //       bundle_stop(mData);
-  */
 
+  */
+  bundle_stop(mData);
   return 0;
 }
 
