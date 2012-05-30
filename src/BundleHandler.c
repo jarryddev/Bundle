@@ -328,7 +328,7 @@ static int packageSourceFolder(char **source, char *desintation, char *extension
               //offset_p off= malloc(HEADER_OFFSET_SIZE);
 
               header_offset off;
-              off.hash = def_hashfunc(fileName);
+              off.hash = def_hashfunc(basename(fileName));
               off.size= size;
               off.offset_start= offset;
 	      off.compressed= 0;

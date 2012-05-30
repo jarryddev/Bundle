@@ -79,6 +79,7 @@ offset_p bundle_getIndexDataFor(char *fileName, long int mmap_address)
 int bundle_stop(struct mappedData *mData){
   hashtbl_destroy(hashtbl);
   return(unMapPakFile (mData->mappedAddress, mData->fileSize));
+  //  free(mData);
 }
 
 // This will be done within an objective-C file
@@ -107,6 +108,8 @@ int main(int argc, char **argv){
 
   if ((offs=bundle_getIndexDataFor(file_to_locate, mData->mappedAddress)) == NULL){
     printf("%s not found\n", file_to_locate);
+    hashtbl_destroy(hashtbl);
+    free(mData);
     exit(1);
   }
 
@@ -115,10 +118,10 @@ int main(int argc, char **argv){
 
   char *retData= getDataForOffsets(mData->mappedAddress, offs->offset_start, offs->size);
 
-  //  free(retData);
+
   free(mData);
   free(offs);
-  
+  //  if (retData) free(retData);  
   //  mData=offs=NULL;
   /* Run Game Code From here */
   

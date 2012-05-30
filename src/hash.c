@@ -46,7 +46,7 @@ HASHTBL *bundle_hash_init(const char *filename){
 
 
 /*int main(void){
-  hash_size hash = 0x30162a8; //def_hashfunc("1.jpg");
+  hash_size hash = def_hashfunc("1.jpg");
   if (bundle_hash_init("test.pak") == -1){
     printf("error!");
     return 0;
@@ -142,27 +142,12 @@ int hashtbl_insert(HASHTBL *hashtbl, hash_size key, void *data)
     if (++thash > hashtbl->size) thash=0; 
   } while (node);
 
-  printf(" **** inserting key : %lu, hash: %lu \n", key, hash);  
-
-  //  node = node->next;
-
-  /*  while(node) {
-    node = 
-
-    if(node->key ==  key) {
-      node->data=data;
-      return 0;
-    }
-        node=node->next;
-    
-	}*/
   if(!(node=malloc(sizeof(struct hashnode_s)))) return -1;
 
   node->key=key;
-  //  node->data= data;
-  //  if (!(node->data= malloc(sizeof(header_offset)))) return -1;
-      
-  //  memcpy(&(*node).data, data, sizeof(header_offset));
+
+  //  printf(" **** inserting key : %lu, hash: %lu \n", key, hash);  
+
   node->data= data;
   node->next=hashtbl->nodes[hash];
   hashtbl->nodes[hash]=node;
@@ -177,8 +162,12 @@ void *hashtbl_get(HASHTBL *hashtbl, hash_size key)
 
   /*fprintf(stderr, "hashtbl_get() key=%s, hash=%d\n", key, hash);*/
 
-  node=hashtbl->nodes[hash];
-  if (node) return node->data;
+  while ((node=hashtbl->nodes[hash])!=NULL){
+    if (node && node->key == key) return node->data;
+    else hash++;
+    if (hash>=hashtbl->size) hash =0;
+  } 
+
   //   while(node) {
   //     printf("key : %p request: %p\n", node->key, key);
   //     if(node->key == key) return node->data;
@@ -195,12 +184,10 @@ void hashtbl_destroy(HASHTBL *hashtbl)
 
   for(n=0; n<hashtbl->size; ++n) {
     node=hashtbl->nodes[n];
-    while(node) {
+    if(node){
       oldnode=node;
-      node=node->next;
+      //      free(node->data);
       free(oldnode);
-      free(node->data); // todo: might have to free data
-
     }
   }
   free(hashtbl->nodes);
