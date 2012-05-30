@@ -134,29 +134,39 @@ HASHTBL *hashtbl_create(hash_size size, hash_size (*hashfunc)(const char *))
 int hashtbl_insert(HASHTBL *hashtbl, hash_size key, void *data)
 {
   struct hashnode_s *node;
-  hash_size hash= key%hashtbl->size;
+  hash_size hash= key%hashtbl->size, thash= hash;
+  
+  do {
+    hash =thash ;
+    node=hashtbl->nodes[thash];
+    if (++thash > hashtbl->size) thash=0; 
+  } while (node);
 
-  /*fprintf(stderr, "hashtbl_insert() key=%s, hash=%d, data=%s\n", key, hash, (char*)data);*/
+  printf(" **** inserting key : %lu, hash: %lu \n", key, hash);  
 
-  node=hashtbl->nodes[hash];
-  while(node) {
+  //  node = node->next;
+
+  /*  while(node) {
+    node = 
+
     if(node->key ==  key) {
       node->data=data;
       return 0;
     }
-    node=node->next;
-  }
+        node=node->next;
+    
+	}*/
   if(!(node=malloc(sizeof(struct hashnode_s)))) return -1;
 
   node->key=key;
-
+  //  node->data= data;
   //  if (!(node->data= malloc(sizeof(header_offset)))) return -1;
       
   //  memcpy(&(*node).data, data, sizeof(header_offset));
   node->data= data;
   node->next=hashtbl->nodes[hash];
   hashtbl->nodes[hash]=node;
-
+  
   return 0;
 }
 
@@ -189,7 +199,7 @@ void hashtbl_destroy(HASHTBL *hashtbl)
       oldnode=node;
       node=node->next;
       free(oldnode);
-      //      free(node->data); // todo: might have to free data
+      free(node->data); // todo: might have to free data
 
     }
   }
